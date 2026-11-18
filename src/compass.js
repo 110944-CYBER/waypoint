@@ -139,12 +139,14 @@ function Compass({ p, st, open, setOpen, about, setAbout, onOpen, locked, onLock
       ${about ? html`<div class="cp-about"><span>About <b>${about.title}</b></span><button aria-label="Ask about everything instead" onClick=${() => setAbout(null)}><${Icon} n="x" s=${14} /></button></div>` : null}
       <div class="cp-msgs" ref=${listRef}>
         <div class="cp-msg ai"><p>Hi ${name}, I’m Compass. Ask me about your matches, what an application needs, or what to do next.</p></div>
-        ${msgs.map((m) => {
+        ${msgs.map((m, idx) => {
           if (m.role === 'user') return html`<div class="cp-msg me"><p>${m.text}</p></div>`;
           if (m.pending && !m.text) return html`<div class="cp-msg ai"><p class="cp-typing"><span></span><span></span><span></span></p></div>`;
           const { text, ops } = listingRefs(m.text, p);
+          const long = !m.pending && !m.open && text.split(/\s+/).length > 120; // keep long answers tidy
           return html`<div class="cp-msg ai">
-            <${Markdown} text=${text} />
+            <div class=${cx('cp-body', long && 'clamp')}><${Markdown} text=${text} /></div>
+            ${long ? html`<button class="cp-more" onClick=${() => setMsgs((ms) => ms.map((x, j) => (j === idx ? Object.assign({}, x, { open: true }) : x)))}>Show more</button>` : null}
             ${ops.length && !m.pending ? html`<div class="cp-links">${ops.map((o) => html`<button class="cp-link" onClick=${() => onOpen && onOpen(o)} aria-label=${`Open ${o.title}`}>
               <span class="tl" data-t=${o.type}><i aria-hidden="true"></i></span><span class="cp-link-t">${o.title}</span><${Icon} n="arrow-right" s=${15} />
             </button>`)}</div>` : null}

@@ -30,7 +30,15 @@ Always help. Answer every question usefully, using your own knowledge of educati
 
 Talk to the student directly as "you", never in the third person. Their own words come first: if their message says who or where they are (for example "as a high school student"), plan for exactly that and do not correct them with the profile. Use the Waypoint data below (profile, matches and applications) only to fill in what the message leaves out. When a goal has earlier stages (for example, medical school comes after a bachelor's degree), cover the whole path from the student's current stage, without lecturing them about it.
 
-Length: every answer is a clear summary of 60 to 150 words. Never go over 150 words, even for a plan or roadmap. For a plan, use 3 or 4 stages: each stage is a **bold** title followed by one short line of the key actions. Lead with the answer; skip introductions, recaps and closing offers. Mention checking the official site in one short line at most. No headings or tables; use short paragraphs and "- " bullets.
+Length: short and sharp, like a brilliant advisor texting a student. Hard limit: 100 words, never more, even for a plan. Shape: one first line that answers the question, then at most 4 short bullets (for a plan, at most 4 stages, each a **bold** title and a few words), then one short "Next step:" line. No introductions, recaps, closing offers or disclaimers; if a detail needs checking, add "(confirm on the official site)" once. No headings or tables.
+
+Example of the right length and shape:
+Your path to Harvard Medical School starts in high school.
+- **High school:** top science grades, shadow a doctor, volunteer.
+- **University:** any major plus pre-med courses, research, the MCAT.
+- **Applying:** a strong application, letters and interviews.
+- **Medical school:** four years at Harvard.
+Next step: book a hospital shadowing day this month.
 
 Links: when you recommend a specific Waypoint listing from the data, write its id in double square brackets right after its name, like this: Software Engineering Intern [[orbit-swe]]. Use only ids that appear in the data. The app turns these into buttons that open the listing. Listings marked (sample) are demo listings, so present them as examples of what to look for. Dates marked est. are estimates.`;
 
@@ -141,7 +149,7 @@ async function compass(req, res) {
   try {
     stream = claude().messages.stream({
       model: MODEL,
-      max_tokens: 600, // answers are 150-word summaries; this is only a safety cap
+      max_tokens: 450, // answers are 100-word summaries; this is only a safety cap
       thinking: { type: 'disabled' }, // no thinking step: cheaper and faster for short chat answers
       output_config: { effort: 'low' },
       system,

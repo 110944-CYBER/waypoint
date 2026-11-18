@@ -14,7 +14,7 @@
    action per screen, colour only where it carries meaning (type, match, urgency). */
 :root {
   --bg: #F6F7F9; --surface: #FFFFFF; --surface-2: #F1F3F6; --ink: #111827; --ink-2: #4B5563; --ink-3: #9CA3AF; --line: #E5E7EB;
-  --accent: #E5372B; --accent-2: #2563EB; --ok: #16A34A; --ok-soft: #E9F7EE; --urgent: #DC2626; --urgent-soft: #FDECEC;
+  --accent: #E5372B; --accent-2: #2563EB; --ok: #16A34A; --ok-soft: #E9F7EE; --urgent: #DC2626; --urgent-soft: #FDECEC; --warn: #B45309;
   --t-internship: #2563EB; --t-scholarship: #D97706; --t-shadowing: #059669; --t-postgrad: #7C3AED;
   --shadow-sm: 0 1px 2px rgba(17, 24, 39, .05);
   --shadow-md: 0 12px 32px -14px rgba(17, 24, 39, .22), 0 2px 6px rgba(17, 24, 39, .04);
@@ -28,7 +28,7 @@
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0B0D12; --surface: #14171E; --surface-2: #1B1F28; --ink: #F3F4F6; --ink-2: #A3AAB7; --ink-3: #6B7280; --line: #262B35;
-    --accent: #FF5A4D; --accent-2: #60A5FA; --ok: #34D399; --ok-soft: #0F2A1F; --urgent: #F87171; --urgent-soft: #2B1717;
+    --accent: #FF5A4D; --accent-2: #60A5FA; --ok: #34D399; --ok-soft: #0F2A1F; --urgent: #F87171; --urgent-soft: #2B1717; --warn: #FBBF24;
     --t-internship: #60A5FA; --t-scholarship: #FBBF24; --t-shadowing: #34D399; --t-postgrad: #A78BFA;
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, .5);
     --shadow-md: 0 12px 32px -12px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .35);
@@ -37,7 +37,7 @@
     --focus: #60A5FA;
     color-scheme: dark; } }
 :root[data-theme="dark"] { --bg: #0B0D12; --surface: #14171E; --surface-2: #1B1F28; --ink: #F3F4F6; --ink-2: #A3AAB7; --ink-3: #6B7280; --line: #262B35;
-    --accent: #FF5A4D; --accent-2: #60A5FA; --ok: #34D399; --ok-soft: #0F2A1F; --urgent: #F87171; --urgent-soft: #2B1717;
+    --accent: #FF5A4D; --accent-2: #60A5FA; --ok: #34D399; --ok-soft: #0F2A1F; --urgent: #F87171; --urgent-soft: #2B1717; --warn: #FBBF24;
     --t-internship: #60A5FA; --t-scholarship: #FBBF24; --t-shadowing: #34D399; --t-postgrad: #A78BFA;
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, .5);
     --shadow-md: 0 12px 32px -12px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .35);
@@ -485,6 +485,74 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .pro-sheet { width: 100%; border-radius: 22px 22px 0 0; padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
   .plans-grid { grid-template-columns: minmax(0, 1fr); }
   .pro-pill { padding: 0 10px; margin-right: 4px; }
+}
+
+
+/* ---------- Header tabs ---------- */
+.topnav { display: flex; gap: 4px; margin-left: 18px; }
+.topnav-a { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 12px; border-radius: 10px; color: var(--ink-2); font: 650 14.5px/1 var(--f-display); text-decoration: none; transition: background-color .15s, color .15s; }
+.topnav-a:hover { color: var(--ink); background: var(--surface-2); }
+.topnav-a.on { color: var(--ink); background: var(--surface-2); }
+
+/* ---------- Warnings ---------- */
+.warn { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, #F59E0B 13%, var(--surface)); border: 1px solid color-mix(in srgb, #F59E0B 38%, transparent); color: var(--warn); }
+.warn > span { display: grid; gap: 2px; color: var(--ink); font-size: 14px; line-height: 1.4; }
+.warn > span > b { font-size: 14.5px; }
+.warn > span > span { color: var(--ink-2); }
+.warn .btn-link { justify-self: start; margin-top: 4px; font-size: 14px; }
+.app { grid-template-areas: "img main dates" "img info dates" "img warn warn"; }
+.app-warn { grid-area: warn; display: flex; align-items: center; gap: 7px; margin-top: 2px; font-size: 13px; font-weight: 650; color: var(--warn); }
+.app-warn.ok { color: var(--ok); }
+.app-warn svg { flex: none; }
+
+/* ---------- Apply sheet ---------- */
+.apply-badge { background: color-mix(in srgb, var(--accent-2) 16%, transparent); color: var(--accent-2); }
+.apply-list { display: grid; gap: 2px; border-radius: 14px; background: var(--surface-2); padding: 6px; }
+.apply-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px 10px; border-radius: 10px; }
+.apply-list li > svg { color: var(--ink-3); }
+.apply-list li.ok > svg { color: var(--ok); }
+.apply-list li.miss > svg { color: #F59E0B; }
+.apply-list li > span { display: grid; line-height: 1.3; min-width: 0; }
+.apply-list b { font-size: 14.5px; }
+.apply-list li > span > span { font-size: 13px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.apply-list li.miss > span > span { color: var(--warn); font-weight: 650; }
+.apply-done { justify-self: start; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); }
+.need-up { margin-top: 10px; }
+
+/* ---------- My documents ---------- */
+.docs-meter { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px; align-items: baseline; padding: 16px 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+.docs-meter b { font: 800 22px/1 var(--f-display); }
+.docs-meter span { color: var(--ink-2); font-size: 14.5px; }
+.docs-meter .prog { grid-column: 1 / -1; margin-top: 8px; }
+.docs-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; padding: 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+.docs-form .field { margin: 0; }
+.docs { display: grid; gap: 8px; }
+.doc { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.doc-ic { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 11px; background: var(--surface-2); color: var(--ink-2); }
+.doc.ok .doc-ic { background: var(--ok-soft); color: var(--ok); }
+.doc-main { display: grid; gap: 2px; min-width: 0; line-height: 1.3; }
+.doc-main b { font-size: 15.5px; }
+.doc-main > span { font-size: 13px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.doc.ok .doc-main > span { color: var(--ink-2); }
+.doc-acts { display: flex; align-items: center; gap: 6px; }
+.doc-x { width: 34px; height: 34px; }
+.docs-fine { display: flex; align-items: center; gap: 6px; justify-content: center; margin-top: 8px; }
+
+/* ---------- Compass long answers ---------- */
+.cp-body.clamp { max-height: 12.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
+.cp-more { justify-self: start; font-size: 13.5px; font-weight: 700; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 640px) {
+  .topnav { margin-left: 8px; }
+  .topnav-a { padding: 0 10px; }
+  .topnav-a span { display: none; }
+  .home .top .logo > span { display: none; }
+  .pro-pill-tx { display: none; }
+  .pro-pill { width: 34px; padding: 0; justify-content: center; }
+  .docs-form { grid-template-columns: minmax(0, 1fr); }
+  .doc { grid-template-columns: auto minmax(0, 1fr); }
+  .doc-acts { grid-column: 1 / -1; justify-content: flex-end; }
+  .app { grid-template-areas: "img main" "dates dates" "info info" "warn warn"; }
 }
 
 /* ---------- Toasts ---------- */
@@ -1850,7 +1918,15 @@ Always help. Answer every question usefully, using your own knowledge of educati
 
 Talk to the student directly as "you", never in the third person. Their own words come first: if their message says who or where they are (for example "as a high school student"), plan for exactly that and do not correct them with the profile. Use the Waypoint data below (profile, matches and applications) only to fill in what the message leaves out. When a goal has earlier stages (for example, medical school comes after a bachelor's degree), cover the whole path from the student's current stage, without lecturing them about it.
 
-Length: every answer is a clear summary of 60 to 150 words. Never go over 150 words, even for a plan or roadmap. For a plan, use 3 or 4 stages: each stage is a **bold** title followed by one short line of the key actions. Lead with the answer; skip introductions, recaps and closing offers. Mention checking the official site in one short line at most. No headings or tables; use short paragraphs and "- " bullets.
+Length: short and sharp, like a brilliant advisor texting a student. Hard limit: 100 words, never more, even for a plan. Shape: one first line that answers the question, then at most 4 short bullets (for a plan, at most 4 stages, each a **bold** title and a few words), then one short "Next step:" line. No introductions, recaps, closing offers or disclaimers; if a detail needs checking, add "(confirm on the official site)" once. No headings or tables.
+
+Example of the right length and shape:
+Your path to Harvard Medical School starts in high school.
+- **High school:** top science grades, shadow a doctor, volunteer.
+- **University:** any major plus pre-med courses, research, the MCAT.
+- **Applying:** a strong application, letters and interviews.
+- **Medical school:** four years at Harvard.
+Next step: book a hospital shadowing day this month.
 
 Links: when you recommend a specific Waypoint listing from the data, write its id in double square brackets right after its name, like this: Software Engineering Intern [[orbit-swe]]. Use only ids that appear in the data. The app turns these into buttons that open the listing. Listings marked (sample) are demo listings, so present them as examples of what to look for. Dates marked est. are estimates.`;
 
@@ -2053,7 +2129,7 @@ const canHover = () => !!(window.matchMedia && window.matchMedia('(hover: hover)
 
 /* ---------- Store (per viewer, kept in this browser only) ---------- */
 const STORE_KEY = 'waypoint.prototype.v2';
-const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, theme: null, pro: null });
+const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, files: {}, details: {}, theme: null, pro: null });
 function loadState() {
   try {
     const raw = localStorage.getItem(STORE_KEY);
@@ -2124,8 +2200,21 @@ const A = {
   markApplied(op) {
     if (appliedOn(S.state, op.id)) return;
     S.set({ applied: appliedList(S.state).concat({ id: op.id, date: new Date().toISOString() }) });
-    toast(op.url ? 'Added to My applications. The official page opened in a new tab.' : 'Added to My applications', 'send');
+    toast('Applied with your saved info', 'send');
   },
+  addDoc(k, meta) {
+    S.set({ files: Object.assign({}, S.state.files, { [k]: meta }), docs: Object.assign({}, S.state.docs, { [k]: 'ready' }) });
+    toast(`${REQ[k].label} saved`, 'file-check');
+  },
+  removeDoc(k) {
+    const files = Object.assign({}, S.state.files); delete files[k];
+    const docs = Object.assign({}, S.state.docs); delete docs[k];
+    S.set({ files, docs });
+    if (typeof vault !== 'undefined') vault.del(k);
+    toast(`${REQ[k].label} removed`, 'trash-2');
+  },
+  setDetails(patch) { S.set({ details: Object.assign({}, S.state.details, patch) }); },
+  setUser(patch) { S.set({ user: Object.assign({}, S.state.user, patch) }); },
   unapply(id) {
     S.set({ applied: appliedList(S.state).filter((a) => a.id !== id) });
     toast('Removed from My applications', 'rotate-ccw');
@@ -2135,6 +2224,7 @@ const A = {
   signOut() { S.set({ user: null }); go(''); },
   reset() {
     try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ignore */ }
+    if (typeof vault !== 'undefined') vault.clear();
     S.set(blankState());
     go('');
   },
@@ -2235,7 +2325,7 @@ function Drawer({ onClose, label, children }) {
   </div>`;
 }
 
-function OppDetail({ op, p, st, onAsk, photo }) {
+function OppDetail({ op, p, st, onAsk, onApply, photo }) {
   const row = rowOf(op, p, st);
   const di = deadlineInfo(op);
   const ok = row.el.ok;
@@ -2257,6 +2347,7 @@ function OppDetail({ op, p, st, onAsk, photo }) {
     <h2 class="det-t">${op.title}</h2>
     <p class="det-o">${op.org} · ${placeOf(op)}${op.sample ? ' · Sample listing' : ''}</p>
     ${applied ? html`<div class="applied-note"><${Icon} n="circle-check" s=${18} /><span>You applied on <b>${fmtDate(appliedDate, true)}</b>. It starts around <b>${fmtDate(start, true)}</b>.</span><button class="btn-link" onClick=${() => A.unapply(op.id)}>Undo</button></div>` : null}
+    ${applied && applyWarning(op, p, st) ? html`<div class="warn"><${Icon} n="circle-alert" s=${20} /><span><b>Don’t forget</b><span>${applyWarning(op, p, st)}</span></span></div>` : null}
     <p class="det-sum">${op.summary}</p>
 
     <div class="facts">
@@ -2280,9 +2371,11 @@ function OppDetail({ op, p, st, onAsk, photo }) {
     ${onAsk ? html`<button class="ask-link" onClick=${() => onAsk(op)}><span class="ask-link-ic"><${Icon} n="compass" s=${18} /></span><span><b>Questions about this?</b><span>Ask Compass, your Waypoint guide</span></span><${Icon} n="arrow-right" s=${18} /></button>` : null}
 
     <div class="det-actions">
-      ${op.url
-        ? html`<a class="btn btn-primary btn-lg" href=${op.url} target="_blank" rel="noopener noreferrer" onClick=${() => A.markApplied(op)}>${applied ? 'Open application' : 'Apply now'}<${Icon} n="arrow-up-right" s=${18} /></a>`
-        : html`<button class="btn btn-primary btn-lg" disabled=${applied} onClick=${() => A.markApplied(op)}>${applied ? 'Applied' : 'Apply now'}</button>`}
+      ${!applied
+        ? html`<button class="btn btn-primary btn-lg" onClick=${() => (onApply ? onApply(op) : A.markApplied(op))}><${Icon} n="send" s=${18} />Apply now</button>`
+        : op.url
+          ? html`<button class="btn btn-primary btn-lg" onClick=${() => onApply && onApply(op)}>Go to official site<${Icon} n="arrow-up-right" s=${18} /></button>`
+          : html`<button class="btn btn-primary btn-lg" disabled><${Icon} n="check" s=${18} />Applied</button>`}
       <button class="btn btn-secondary btn-lg" aria-pressed=${String(saved)} onClick=${() => A.toggleSave(op.id)}><${Icon} n=${saved ? 'bookmark-check' : 'bookmark'} s=${18} />${saved ? 'Saved' : 'Save'}</button>
     </div>
   </div>`;
@@ -2306,6 +2399,7 @@ function NeedRow({ r, op, p, st, open, onToggle }) {
     ${open && g.steps ? html`<div class="need-how">
       <ol>${g.steps.map((s) => html`<li>${s}</li>`)}</ol>
       ${g.local ? html`<p class="need-local"><${Icon} n="map-pin" s=${15} />${g.local.replace('{city}', city.name)}</p>` : null}
+      ${typeof VAULT_KEYS !== 'undefined' && VAULT_KEYS.includes(r.k) ? html`<button class="btn btn-sm btn-secondary need-up" onClick=${() => go('documents')}><${Icon} n="upload" s=${15} />${rs.s === 'met' ? 'See it in My documents' : 'Upload it in My documents'}</button>` : null}
     </div>` : null}
   </li>`;
 }
@@ -3988,12 +4082,14 @@ function Compass({ p, st, open, setOpen, about, setAbout, onOpen, locked, onLock
       ${about ? html`<div class="cp-about"><span>About <b>${about.title}</b></span><button aria-label="Ask about everything instead" onClick=${() => setAbout(null)}><${Icon} n="x" s=${14} /></button></div>` : null}
       <div class="cp-msgs" ref=${listRef}>
         <div class="cp-msg ai"><p>Hi ${name}, I’m Compass. Ask me about your matches, what an application needs, or what to do next.</p></div>
-        ${msgs.map((m) => {
+        ${msgs.map((m, idx) => {
           if (m.role === 'user') return html`<div class="cp-msg me"><p>${m.text}</p></div>`;
           if (m.pending && !m.text) return html`<div class="cp-msg ai"><p class="cp-typing"><span></span><span></span><span></span></p></div>`;
           const { text, ops } = listingRefs(m.text, p);
+          const long = !m.pending && !m.open && text.split(/\s+/).length > 120; // keep long answers tidy
           return html`<div class="cp-msg ai">
-            <${Markdown} text=${text} />
+            <div class=${cx('cp-body', long && 'clamp')}><${Markdown} text=${text} /></div>
+            ${long ? html`<button class="cp-more" onClick=${() => setMsgs((ms) => ms.map((x, j) => (j === idx ? Object.assign({}, x, { open: true }) : x)))}>Show more</button>` : null}
             ${ops.length && !m.pending ? html`<div class="cp-links">${ops.map((o) => html`<button class="cp-link" onClick=${() => onOpen && onOpen(o)} aria-label=${`Open ${o.title}`}>
               <span class="tl" data-t=${o.type}><i aria-hidden="true"></i></span><span class="cp-link-t">${o.title}</span><${Icon} n="arrow-right" s=${15} />
             </button>`)}</div>` : null}
@@ -4094,6 +4190,224 @@ function Plans({ onStart }) {
   </section>`;
 }
 
+/* ---- vault.js ---- */
+/* ==========================================================================
+   Waypoint · My documents and one-tap apply.
+   Students add their details and documents once; every application reuses
+   them, so there are no forms to fill. Files stay in this browser
+   (IndexedDB); nothing is uploaded to a server.
+   ========================================================================== */
+
+// Documents a student can keep ready, most asked-for first.
+const VAULT_KEYS = ['cv', 'statement', 'transcript', 'refs', 'english', 'passport', 'consent', 'schoolletter', 'portfolio', 'leadership', 'research', 'gre', 'health', 'video', 'need'];
+const VAULT_MAIN = 6; // shown before "More documents"
+const MAX_FILE = 15 * 1024 * 1024;
+
+const vault = {
+  _db: null,
+  open() {
+    if (!this._db) {
+      this._db = new Promise((res, rej) => {
+        try {
+          const r = indexedDB.open('waypoint-vault', 1);
+          r.onupgradeneeded = () => r.result.createObjectStore('files');
+          r.onsuccess = () => res(r.result);
+          r.onerror = () => rej(r.error);
+        } catch (e) { rej(e); }
+      });
+    }
+    return this._db;
+  },
+  async run(mode, fn) {
+    try {
+      const db = await this.open();
+      return await new Promise((res, rej) => {
+        const tx = db.transaction('files', mode);
+        const out = fn(tx.objectStore('files'));
+        tx.oncomplete = () => res(out && 'result' in out ? out.result : true);
+        tx.onerror = () => rej(tx.error);
+      });
+    } catch (e) { return null; }
+  },
+  put(k, file) { return this.run('readwrite', (s) => s.put(file, k)); },
+  get(k) { return this.run('readonly', (s) => s.get(k)); },
+  del(k) { return this.run('readwrite', (s) => s.delete(k)); },
+  clear() { return this.run('readwrite', (s) => s.clear()); },
+};
+
+const fileSize = (n) => (n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
+
+/* Documents this listing asks for that can be kept in My documents, with their state. */
+function applyItems(op, p, st) {
+  return op.reqs
+    .filter((r) => VAULT_KEYS.includes(r.k) && reqStatus(r, op, p, st).s !== 'na')
+    .map((r) => ({ k: r.k, label: r.t || REQ[r.k].label, opt: !!r.opt, ready: reqStatus(r, op, p, st).s === 'met', file: (st.files || {})[r.k] }));
+}
+/* The date to have everything in by: the deadline, or the start date when there is no future deadline. */
+function dueDate(op) {
+  const di = deadlineInfo(op);
+  return di.d && daysUntil(di.d) >= 0 ? di.d : startOf(op);
+}
+const listOf = (xs) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
+// Lower-case a label for use mid-sentence, keeping acronyms (CV) and proper nouns (English) intact.
+const lc = (t) => (t.length > 1 && t[1] === t[1].toLowerCase() ? t[0].toLowerCase() + t.slice(1) : t);
+/* A plain warning for an application that still needs something, or null when it's complete. */
+function applyWarning(op, p, st) {
+  const missing = applyItems(op, p, st).filter((i) => !i.ready && !i.opt).map((i) => lc(i.label));
+  const due = fmtDate(dueDate(op), true);
+  if (missing.length) return `Submit your ${listOf(missing)} before ${due}, or this application won’t be complete.`;
+  if (op.url) return `Finish on ${op.org}’s website before ${due}.`;
+  return null;
+}
+
+/* ---------- The header tabs ---------- */
+function TopNav({ active }) {
+  const tab = (id, label, icon) => html`<a class=${cx('topnav-a', active === id && 'on')} href=${'#' + id} aria-label=${label} title=${label} aria-current=${active === id ? 'page' : null}
+    onClick=${(e) => { e.preventDefault(); go(id); }}><${Icon} n=${icon} s=${17} /><span>${label}</span></a>`;
+  return html`<nav class="topnav" aria-label="Sections">${tab('home', 'Matches', 'sparkles')}${tab('documents', 'My documents', 'folder-open')}</nav>`;
+}
+
+/* ---------- Apply with saved info ---------- */
+function ApplySheet({ op, p, st, onClose }) {
+  const [sent, setSent] = useState(!!appliedOn(st, op.id));
+  const ref = useRef();
+  useEffect(() => {
+    const k = (e) => { if (e.key === 'Escape') { e.stopImmediatePropagation(); onClose(); } };
+    window.addEventListener('keydown', k, true);
+    if (ref.current) ref.current.focus();
+    return () => window.removeEventListener('keydown', k, true);
+  }, []);
+  const items = applyItems(op, p, st);
+  const missing = items.filter((i) => !i.ready && !i.opt);
+  const u = st.user || {};
+  const d = st.details || {};
+  const due = fmtDate(dueDate(op), true);
+  const toDocs = () => { onClose(); go('documents'); };
+  const apply = () => { A.markApplied(op); setSent(true); };
+  const redirect = () => { try { window.open(op.url, '_blank', 'noopener'); } catch (e) { /* blocked */ } onClose(); };
+  return html`<div class="pro-wrap">
+    <div class="pro-back" onClick=${onClose}></div>
+    <div class="pro-sheet apply" role="dialog" aria-modal="true" aria-label=${`Apply to ${op.title}`} tabindex="-1" ref=${ref}>
+      <button class="icon-btn pro-x" aria-label="Close" onClick=${onClose}><${Icon} n="x" s=${20} /></button>
+      ${!sent ? html`
+        <span class="pro-badge apply-badge"><${Icon} n="send" s=${14} />One-tap apply</span>
+        <h2 class="pro-h">Apply to ${op.title}</h2>
+        <p class="pro-sub">${op.org} · Closes ${due}. We use your saved info, so there are no forms to fill.</p>
+        <ul class="apply-list">
+          <li class="ok"><${Icon} n="circle-check" s=${18} /><span><b>Your details</b><span>${[u.name, u.email, d.phone, d.school].filter(Boolean).join(' · ')}</span></span></li>
+          ${items.map((i) => html`<li class=${i.ready ? 'ok' : i.opt ? 'opt' : 'miss'}>
+            <${Icon} n=${i.ready ? 'circle-check' : 'circle-alert'} s=${18} />
+            <span><b>${i.label}</b><span>${i.ready ? (i.file ? `${i.file.name} · ${fileSize(i.file.size)}` : 'Ready') : i.opt ? 'Optional' : 'Missing'}</span></span>
+          </li>`)}
+        </ul>
+        ${missing.length ? html`<div class="warn" role="alert"><${Icon} n="circle-alert" s=${20} />
+          <span><b>Submit your info before ${due}</b><span>${listOf(missing.map((i) => i.label))} ${missing.length > 1 ? 'are' : 'is'} still missing. You can apply now and add ${missing.length > 1 ? 'them' : 'it'} later.</span>
+          <button class="btn-link" onClick=${toDocs}>Add in My documents</button></span>
+        </div>` : null}
+        <button class="btn btn-primary btn-lg btn-block" onClick=${apply}><${Icon} n="send" s=${18} />Apply with my saved info</button>` : html`
+        <span class="apply-done"><${Icon} n="circle-check" s=${30} /></span>
+        <h2 class="pro-h">You applied to ${op.title}</h2>
+        ${op.url ? html`
+          <p class="pro-sub">${op.org} takes final submissions on its own website. Would you like to be redirected there now?</p>
+          ${missing.length ? html`<div class="warn"><${Icon} n="circle-alert" s=${20} /><span><b>Before ${due}</b><span>Add your ${listOf(missing.map((i) => lc(i.label)))} too.</span></span></div>` : null}
+          <button class="btn btn-primary btn-lg btn-block" onClick=${redirect}>Yes, take me to ${op.org}<${Icon} n="arrow-up-right" s=${18} /></button>
+          <button class="btn btn-ghost btn-block" onClick=${onClose}>No, stay on Waypoint</button>` : html`
+          <p class="pro-sub">Your saved info was sent. You’ll find it in My applications, with its start date.</p>
+          ${missing.length ? html`<div class="warn"><${Icon} n="circle-alert" s=${20} /><span><b>Submit your info before ${due}</b><span>Add your ${listOf(missing.map((i) => lc(i.label)))} in My documents.</span><button class="btn-link" onClick=${toDocs}>Add in My documents</button></span></div>` : null}
+          <button class="btn btn-primary btn-lg btn-block" onClick=${onClose}>Done</button>`}`}
+    </div>
+  </div>`;
+}
+
+/* ---------- My documents page ---------- */
+function DocRow({ k, st, need }) {
+  const g = REQ[k];
+  const file = (st.files || {})[k];
+  const ready = (st.docs || {})[k] === 'ready';
+  const inRef = useRef();
+  const pick = () => inRef.current && inRef.current.click();
+  const onFile = async (e) => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!f) return;
+    if (f.size > MAX_FILE) { toast('Please choose a file under 15 MB', 'info'); return; }
+    const stored = await vault.put(k, f);
+    A.addDoc(k, { name: f.name, size: f.size, type: f.type, date: new Date().toISOString(), stored: !!stored });
+  };
+  const view = async () => {
+    const blob = await vault.get(k);
+    if (!blob) { toast('This file isn’t saved in this browser', 'info'); return; }
+    try { const url = URL.createObjectURL(blob); window.open(url, '_blank', 'noopener'); setTimeout(() => URL.revokeObjectURL(url), 60000); }
+    catch (err) { toast('Can’t open the file here', 'info'); }
+  };
+  return html`<li class=${cx('doc', ready && 'ok')}>
+    <span class="doc-ic"><${Icon} n=${ready ? 'file-check' : g.icon || 'file-text'} s=${20} /></span>
+    <span class="doc-main"><b>${g.label}</b>
+      <span>${file ? `${file.name} · ${fileSize(file.size)} · added ${fmtDate(new Date(file.date))}` : ready ? 'Marked as ready' : need ? `Needed for ${need} of your matches` : 'Not added yet'}</span></span>
+    <span class="doc-acts">
+      ${file && file.stored ? html`<button class="btn btn-sm btn-ghost" onClick=${view}>View</button>` : null}
+      <button class=${cx('btn btn-sm', ready ? 'btn-secondary' : 'btn-primary')} onClick=${pick}><${Icon} n=${ready ? 'refresh-cw' : 'upload'} s=${15} />${ready ? 'Replace' : 'Upload'}</button>
+      ${ready ? html`<button class="icon-btn doc-x" aria-label=${`Remove ${g.label}`} onClick=${() => A.removeDoc(k)}><${Icon} n="trash-2" s=${17} /></button>` : null}
+    </span>
+    <input ref=${inRef} type="file" hidden accept=".pdf,.doc,.docx,.txt,.rtf,.png,.jpg,.jpeg,.heic" onChange=${onFile} />
+  </li>`;
+}
+
+function Documents() {
+  const st = S.state;
+  const p = st.profile;
+  const u = st.user || {};
+  const d = st.details || {};
+  const [more, setMore] = useState(false);
+  const [proOpen, setProOpen] = useState(false);
+  const name = u.name || 'there';
+  const ms = matches(p, st);
+  const needCount = (k) => ms.filter(({ op }) => op.reqs.some((r) => r.k === k && reqStatus(r, op, p, st).s !== 'na')).length;
+  const keys = VAULT_KEYS.filter((k) => REQ[k] && !(REQ[k].minorOnly && p.age >= 18)).map((k) => ({ k, need: needCount(k) }));
+  const main = keys.slice(0, VAULT_MAIN);
+  const rest = keys.slice(VAULT_MAIN).sort((a, b) => b.need - a.need);
+  const readyN = keys.filter(({ k }) => (st.docs || {})[k] === 'ready').length;
+  const field = (id, label, value, onSet, type = 'text', ph = '') => html`<div class="field"><label for=${id}>${label}</label>
+    <input id=${id} class="input" type=${type} placeholder=${ph} value=${value || ''} onChange=${(e) => onSet(e.target.value.trim())} /></div>`;
+  return html`<div class="home">
+    <header class="top">
+      <${Logo} to="home" />
+      <${TopNav} active="documents" />
+      <span class="sp"></span>
+      <button class=${cx('pro-pill', st.pro && 'on')} onClick=${() => setProOpen(true)}><${Icon} n="sparkles" s=${14} /><span class="pro-pill-tx">${st.pro ? 'Pro' : 'Get Pro'}</span></button>
+      <${UserMenu} name=${name} pro=${!!st.pro} onPro=${() => setProOpen(true)} />
+    </header>
+    <main class="wrap home-in docs-in" id="main">
+      <div class="home-head">
+        <h1 class="home-h">My documents</h1>
+        <p class="home-sub">Add them once. Every application uses them, so you never fill the same form twice.</p>
+      </div>
+      <div class="docs-meter"><b>${readyN} of ${keys.length}</b><span>documents ready</span><div class="prog"><span style=${`width:${Math.round((readyN / keys.length) * 100)}%`}></span></div></div>
+
+      <section class="sec" aria-labelledby="det-h">
+        <div class="sec-head"><h2 id="det-h"><${Icon} n="user-round" s=${19} />Your details</h2><span>Used on every application</span></div>
+        <div class="docs-form">
+          ${field('d-name', 'Full name', u.name, (v) => v && A.setUser({ name: v }))}
+          ${field('d-email', 'Email', u.email, (v) => v && A.setUser({ email: v }), 'email')}
+          ${field('d-phone', 'Phone', d.phone, (v) => A.setDetails({ phone: v }), 'tel', '+973 3000 0000')}
+          ${field('d-school', 'School or university', d.school, (v) => A.setDetails({ school: v }), 'text', 'Your school')}
+          ${field('d-grades', 'Grades or GPA', d.grades, (v) => A.setDetails({ grades: v }), 'text', 'e.g. 3.8 / 4.0')}
+          ${field('d-nat', 'Nationality', d.nationality, (v) => A.setDetails({ nationality: v }), 'text', homeCity(p).country)}
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="docs-h">
+        <div class="sec-head"><h2 id="docs-h"><${Icon} n="folder-open" s=${19} />Documents</h2><span>PDF, Word or photos, up to 15 MB</span></div>
+        <ul class="docs">${main.map(({ k, need }) => html`<${DocRow} key=${k} k=${k} st=${st} need=${need} />`)}</ul>
+        ${rest.length ? html`<button class="btn btn-secondary center-btn" aria-expanded=${String(more)} onClick=${() => setMore(!more)}>${more ? 'Show fewer' : `More documents (${rest.length})`}</button>` : null}
+        ${more ? html`<ul class="docs">${rest.map(({ k, need }) => html`<${DocRow} key=${k} k=${k} st=${st} need=${need} />`)}</ul>` : null}
+      </section>
+      <p class="fine docs-fine"><${Icon} n="lock" s=${14} />Saved only in this browser. Nothing is uploaded to a server in this prototype.</p>
+    </main>
+    ${proOpen ? html`<${ProSheet} onClose=${() => setProOpen(false)} />` : null}
+  </div>`;
+}
+
 /* ---- landing.js ---- */
 /* ==========================================================================
    Waypoint · landing page: one headline, one action, one preview
@@ -4169,7 +4483,8 @@ const TAGLINE = { internship: 'Paid work experience', scholarship: 'Funding for 
 
 // The demo account answers the five questions like any new account.
 function startDemo() {
-  S.set({ user: { name: 'Yousif', email: 'yousif@example.com' }, profile: null, docs: Object.assign({}, DEMO_DOCS), saved: [], applied: [], pro: null });
+  if (typeof vault !== 'undefined') vault.clear();
+  S.set({ user: { name: 'Yousif', email: 'yousif@example.com' }, profile: null, docs: {}, files: {}, details: {}, saved: [], applied: [], pro: null });
   go('check-in');
 }
 
@@ -4356,6 +4671,7 @@ function Home() {
   const [openId, setOpenId] = useState(null);
   const [openPhoto, setOpenPhoto] = useState(null);
   const [proSheet, setProSheet] = useState(null); // null, or { after } to run once Pro starts
+  const [applyOp, setApplyOp] = useState(null);
   const pro = !!st.pro;
   const askCompass = (about) => {
     const openIt = () => { setCpAbout(about || null); setCpOpen(true); };
@@ -4391,8 +4707,9 @@ function Home() {
   return html`<div class="home">
     <header class="top">
       <${Logo} to="home" />
+      <${TopNav} active="home" />
       <span class="sp"></span>
-      <button class=${cx('pro-pill', pro && 'on')} onClick=${() => setProSheet({})}><${Icon} n="sparkles" s=${14} />${pro ? 'Pro' : 'Get Pro'}</button>
+      <button class=${cx('pro-pill', pro && 'on')} onClick=${() => setProSheet({})}><${Icon} n="sparkles" s=${14} /><span class="pro-pill-tx">${pro ? 'Pro' : 'Get Pro'}</span></button>
       <${UserMenu} name=${name} pro=${pro} onPro=${() => setProSheet({})} />
     </header>
     <main class="wrap home-in" id="main">
@@ -4412,6 +4729,7 @@ function Home() {
             <span><small>Starts</small><b>${fmtDate(s0, true)}</b><em>${n > 0 ? `in ${n} days` : 'started'}</em></span>
           </span>
           <span class="app-info"><span class="tag"><${Icon} n="hourglass" s=${14} />${o.duration}</span><span class="tag"><${Icon} n="wallet" s=${14} />${moneyOf(o)}</span></span>
+          ${applyWarning(o, p, st) ? html`<span class="app-warn"><${Icon} n="circle-alert" s=${16} />${applyWarning(o, p, st)}</span>` : html`<span class="app-warn ok"><${Icon} n="circle-check" s=${16} />Everything is sent</span>`}
         </button></li>`; })}</ul>
       </section>` : null}
 
@@ -4435,8 +4753,9 @@ function Home() {
     </main>
     <footer class="foot wrap home-foot"><p>Waypoint prototype · <button class="btn-link" onClick=${() => setCredits(true)}>Photo credits</button></p></footer>
     ${credits ? html`<${Credits} onClose=${() => setCredits(false)} />` : null}
-    ${op ? html`<${Drawer} label=${op.title} onClose=${() => setOpenId(null)}><${OppDetail} key=${op.id} op=${op} p=${p} st=${st} photo=${openPhoto} onAsk=${(o) => { setOpenId(null); askCompass(o); }} /></${Drawer}>` : null}
+    ${op ? html`<${Drawer} label=${op.title} onClose=${() => setOpenId(null)}><${OppDetail} key=${op.id} op=${op} p=${p} st=${st} photo=${openPhoto} onAsk=${(o) => { setOpenId(null); askCompass(o); }} onApply=${(o) => setApplyOp(o)} /></${Drawer}>` : null}
     <${Compass} p=${p} st=${st} locked=${!pro} onLocked=${() => askCompass(null)} open=${cpOpen} setOpen=${setCpOpen} about=${cpAbout} setAbout=${setCpAbout} onOpen=${(o) => { setCpOpen(false); setOpenPhoto(null); setOpenId(o.id); }} />
+    ${applyOp ? html`<${ApplySheet} op=${applyOp} p=${p} st=${st} onClose=${() => setApplyOp(null)} />` : null}
     ${proSheet ? html`<${ProSheet} onClose=${() => setProSheet(null)} onStarted=${() => { const after = proSheet.after; setProSheet(null); if (after) after(); }} />` : null}
   </div>`;
 }
@@ -4456,13 +4775,14 @@ function Root() {
   }, []);
   useEffect(() => { applyTheme(st.theme); }, [st.theme]);
   let r = route === 'welcome' ? 'check-in' : route;
-  if (!['', 'top', 'login', 'signup', 'check-in', 'home'].includes(r)) r = 'home';
+  if (!['', 'top', 'login', 'signup', 'check-in', 'home', 'documents'].includes(r)) r = 'home';
   let view;
-  if ((r === 'home' || r === 'check-in') && !st.user) view = html`<${Redirect} to="signup" />`;
-  else if (r === 'home' && !st.profile) view = html`<${Redirect} to="check-in" />`;
+  if ((r === 'home' || r === 'check-in' || r === 'documents') && !st.user) view = html`<${Redirect} to="signup" />`;
+  else if ((r === 'home' || r === 'documents') && !st.profile) view = html`<${Redirect} to="check-in" />`;
   else if (r === '' || r === 'top') view = html`<${Landing} />`;
   else if (r === 'login' || r === 'signup') view = html`<${Auth} mode=${r} />`;
   else if (r === 'check-in') view = html`<${CheckIn} />`;
+  else if (r === 'documents') view = html`<${Documents} />`;
   else view = html`<${Home} />`;
   return html`${view}<${Toasts} />`;
 }

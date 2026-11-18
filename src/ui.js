@@ -92,7 +92,7 @@ function Drawer({ onClose, label, children }) {
   </div>`;
 }
 
-function OppDetail({ op, p, st, onAsk, photo }) {
+function OppDetail({ op, p, st, onAsk, onApply, photo }) {
   const row = rowOf(op, p, st);
   const di = deadlineInfo(op);
   const ok = row.el.ok;
@@ -114,6 +114,7 @@ function OppDetail({ op, p, st, onAsk, photo }) {
     <h2 class="det-t">${op.title}</h2>
     <p class="det-o">${op.org} · ${placeOf(op)}${op.sample ? ' · Sample listing' : ''}</p>
     ${applied ? html`<div class="applied-note"><${Icon} n="circle-check" s=${18} /><span>You applied on <b>${fmtDate(appliedDate, true)}</b>. It starts around <b>${fmtDate(start, true)}</b>.</span><button class="btn-link" onClick=${() => A.unapply(op.id)}>Undo</button></div>` : null}
+    ${applied && applyWarning(op, p, st) ? html`<div class="warn"><${Icon} n="circle-alert" s=${20} /><span><b>Don’t forget</b><span>${applyWarning(op, p, st)}</span></span></div>` : null}
     <p class="det-sum">${op.summary}</p>
 
     <div class="facts">
@@ -137,9 +138,11 @@ function OppDetail({ op, p, st, onAsk, photo }) {
     ${onAsk ? html`<button class="ask-link" onClick=${() => onAsk(op)}><span class="ask-link-ic"><${Icon} n="compass" s=${18} /></span><span><b>Questions about this?</b><span>Ask Compass, your Waypoint guide</span></span><${Icon} n="arrow-right" s=${18} /></button>` : null}
 
     <div class="det-actions">
-      ${op.url
-        ? html`<a class="btn btn-primary btn-lg" href=${op.url} target="_blank" rel="noopener noreferrer" onClick=${() => A.markApplied(op)}>${applied ? 'Open application' : 'Apply now'}<${Icon} n="arrow-up-right" s=${18} /></a>`
-        : html`<button class="btn btn-primary btn-lg" disabled=${applied} onClick=${() => A.markApplied(op)}>${applied ? 'Applied' : 'Apply now'}</button>`}
+      ${!applied
+        ? html`<button class="btn btn-primary btn-lg" onClick=${() => (onApply ? onApply(op) : A.markApplied(op))}><${Icon} n="send" s=${18} />Apply now</button>`
+        : op.url
+          ? html`<button class="btn btn-primary btn-lg" onClick=${() => onApply && onApply(op)}>Go to official site<${Icon} n="arrow-up-right" s=${18} /></button>`
+          : html`<button class="btn btn-primary btn-lg" disabled><${Icon} n="check" s=${18} />Applied</button>`}
       <button class="btn btn-secondary btn-lg" aria-pressed=${String(saved)} onClick=${() => A.toggleSave(op.id)}><${Icon} n=${saved ? 'bookmark-check' : 'bookmark'} s=${18} />${saved ? 'Saved' : 'Save'}</button>
     </div>
   </div>`;
@@ -163,6 +166,7 @@ function NeedRow({ r, op, p, st, open, onToggle }) {
     ${open && g.steps ? html`<div class="need-how">
       <ol>${g.steps.map((s) => html`<li>${s}</li>`)}</ol>
       ${g.local ? html`<p class="need-local"><${Icon} n="map-pin" s=${15} />${g.local.replace('{city}', city.name)}</p>` : null}
+      ${typeof VAULT_KEYS !== 'undefined' && VAULT_KEYS.includes(r.k) ? html`<button class="btn btn-sm btn-secondary need-up" onClick=${() => go('documents')}><${Icon} n="upload" s=${15} />${rs.s === 'met' ? 'See it in My documents' : 'Upload it in My documents'}</button>` : null}
     </div>` : null}
   </li>`;
 }

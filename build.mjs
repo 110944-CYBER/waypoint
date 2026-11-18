@@ -8,7 +8,7 @@ const src = (f) => readFileSync(join(here, 'src', f), 'utf8');
 
 const dark = src('tokens-dark.css').trim();
 const css = src('styles.css').split('/*@@DARK@@*/').join(dark);
-const js = ['icons.js', 'data.js', 'engine.js', 'core.js', 'ui.js', 'photo-credits.js', 'photos.js', 'compass.js', 'pro.js', 'landing.js', 'onboard.js', 'app.js']
+const js = ['icons.js', 'data.js', 'engine.js', 'core.js', 'ui.js', 'photo-credits.js', 'photos.js', 'compass.js', 'pro.js', 'vault.js', 'landing.js', 'onboard.js', 'app.js']
   .map((f) => `/* ---- ${f} ---- */\n${src(f)}`).join('\n');
 
 const FONTS = 'https://fonts.googleapis.com/css2?family=Archivo:wght@500..800&family=Atkinson+Hyperlegible+Next:wght@400..800&display=swap';

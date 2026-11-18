@@ -43,6 +43,7 @@ function Home() {
   const [openId, setOpenId] = useState(null);
   const [openPhoto, setOpenPhoto] = useState(null);
   const [proSheet, setProSheet] = useState(null); // null, or { after } to run once Pro starts
+  const [applyOp, setApplyOp] = useState(null);
   const pro = !!st.pro;
   const askCompass = (about) => {
     const openIt = () => { setCpAbout(about || null); setCpOpen(true); };
@@ -78,8 +79,9 @@ function Home() {
   return html`<div class="home">
     <header class="top">
       <${Logo} to="home" />
+      <${TopNav} active="home" />
       <span class="sp"></span>
-      <button class=${cx('pro-pill', pro && 'on')} onClick=${() => setProSheet({})}><${Icon} n="sparkles" s=${14} />${pro ? 'Pro' : 'Get Pro'}</button>
+      <button class=${cx('pro-pill', pro && 'on')} onClick=${() => setProSheet({})}><${Icon} n="sparkles" s=${14} /><span class="pro-pill-tx">${pro ? 'Pro' : 'Get Pro'}</span></button>
       <${UserMenu} name=${name} pro=${pro} onPro=${() => setProSheet({})} />
     </header>
     <main class="wrap home-in" id="main">
@@ -99,6 +101,7 @@ function Home() {
             <span><small>Starts</small><b>${fmtDate(s0, true)}</b><em>${n > 0 ? `in ${n} days` : 'started'}</em></span>
           </span>
           <span class="app-info"><span class="tag"><${Icon} n="hourglass" s=${14} />${o.duration}</span><span class="tag"><${Icon} n="wallet" s=${14} />${moneyOf(o)}</span></span>
+          ${applyWarning(o, p, st) ? html`<span class="app-warn"><${Icon} n="circle-alert" s=${16} />${applyWarning(o, p, st)}</span>` : html`<span class="app-warn ok"><${Icon} n="circle-check" s=${16} />Everything is sent</span>`}
         </button></li>`; })}</ul>
       </section>` : null}
 
@@ -122,8 +125,9 @@ function Home() {
     </main>
     <footer class="foot wrap home-foot"><p>Waypoint prototype · <button class="btn-link" onClick=${() => setCredits(true)}>Photo credits</button></p></footer>
     ${credits ? html`<${Credits} onClose=${() => setCredits(false)} />` : null}
-    ${op ? html`<${Drawer} label=${op.title} onClose=${() => setOpenId(null)}><${OppDetail} key=${op.id} op=${op} p=${p} st=${st} photo=${openPhoto} onAsk=${(o) => { setOpenId(null); askCompass(o); }} /></${Drawer}>` : null}
+    ${op ? html`<${Drawer} label=${op.title} onClose=${() => setOpenId(null)}><${OppDetail} key=${op.id} op=${op} p=${p} st=${st} photo=${openPhoto} onAsk=${(o) => { setOpenId(null); askCompass(o); }} onApply=${(o) => setApplyOp(o)} /></${Drawer}>` : null}
     <${Compass} p=${p} st=${st} locked=${!pro} onLocked=${() => askCompass(null)} open=${cpOpen} setOpen=${setCpOpen} about=${cpAbout} setAbout=${setCpAbout} onOpen=${(o) => { setCpOpen(false); setOpenPhoto(null); setOpenId(o.id); }} />
+    ${applyOp ? html`<${ApplySheet} op=${applyOp} p=${p} st=${st} onClose=${() => setApplyOp(null)} />` : null}
     ${proSheet ? html`<${ProSheet} onClose=${() => setProSheet(null)} onStarted=${() => { const after = proSheet.after; setProSheet(null); if (after) after(); }} />` : null}
   </div>`;
 }
@@ -143,13 +147,14 @@ function Root() {
   }, []);
   useEffect(() => { applyTheme(st.theme); }, [st.theme]);
   let r = route === 'welcome' ? 'check-in' : route;
-  if (!['', 'top', 'login', 'signup', 'check-in', 'home'].includes(r)) r = 'home';
+  if (!['', 'top', 'login', 'signup', 'check-in', 'home', 'documents'].includes(r)) r = 'home';
   let view;
-  if ((r === 'home' || r === 'check-in') && !st.user) view = html`<${Redirect} to="signup" />`;
-  else if (r === 'home' && !st.profile) view = html`<${Redirect} to="check-in" />`;
+  if ((r === 'home' || r === 'check-in' || r === 'documents') && !st.user) view = html`<${Redirect} to="signup" />`;
+  else if ((r === 'home' || r === 'documents') && !st.profile) view = html`<${Redirect} to="check-in" />`;
   else if (r === '' || r === 'top') view = html`<${Landing} />`;
   else if (r === 'login' || r === 'signup') view = html`<${Auth} mode=${r} />`;
   else if (r === 'check-in') view = html`<${CheckIn} />`;
+  else if (r === 'documents') view = html`<${Documents} />`;
   else view = html`<${Home} />`;
   return html`${view}<${Toasts} />`;
 }

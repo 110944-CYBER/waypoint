@@ -8,7 +8,8 @@ const TAGLINE = { internship: 'Paid work experience', scholarship: 'Funding for 
 
 // The demo account answers the five questions like any new account.
 function startDemo() {
-  S.set({ user: { name: 'Yousif', email: 'yousif@example.com' }, profile: null, docs: Object.assign({}, DEMO_DOCS), saved: [], applied: [], pro: null });
+  if (typeof vault !== 'undefined') vault.clear();
+  S.set({ user: { name: 'Yousif', email: 'yousif@example.com' }, profile: null, docs: {}, files: {}, details: {}, saved: [], applied: [], pro: null });
   go('check-in');
 }
 

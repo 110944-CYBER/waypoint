@@ -9,7 +9,7 @@ const canHover = () => !!(window.matchMedia && window.matchMedia('(hover: hover)
 
 /* ---------- Store (per viewer, kept in this browser only) ---------- */
 const STORE_KEY = 'waypoint.prototype.v2';
-const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, theme: null, pro: null });
+const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, files: {}, details: {}, theme: null, pro: null });
 function loadState() {
   try {
     const raw = localStorage.getItem(STORE_KEY);
@@ -80,8 +80,21 @@ const A = {
   markApplied(op) {
     if (appliedOn(S.state, op.id)) return;
     S.set({ applied: appliedList(S.state).concat({ id: op.id, date: new Date().toISOString() }) });
-    toast(op.url ? 'Added to My applications. The official page opened in a new tab.' : 'Added to My applications', 'send');
+    toast('Applied with your saved info', 'send');
   },
+  addDoc(k, meta) {
+    S.set({ files: Object.assign({}, S.state.files, { [k]: meta }), docs: Object.assign({}, S.state.docs, { [k]: 'ready' }) });
+    toast(`${REQ[k].label} saved`, 'file-check');
+  },
+  removeDoc(k) {
+    const files = Object.assign({}, S.state.files); delete files[k];
+    const docs = Object.assign({}, S.state.docs); delete docs[k];
+    S.set({ files, docs });
+    if (typeof vault !== 'undefined') vault.del(k);
+    toast(`${REQ[k].label} removed`, 'trash-2');
+  },
+  setDetails(patch) { S.set({ details: Object.assign({}, S.state.details, patch) }); },
+  setUser(patch) { S.set({ user: Object.assign({}, S.state.user, patch) }); },
   unapply(id) {
     S.set({ applied: appliedList(S.state).filter((a) => a.id !== id) });
     toast('Removed from My applications', 'rotate-ccw');
@@ -91,6 +104,7 @@ const A = {
   signOut() { S.set({ user: null }); go(''); },
   reset() {
     try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ignore */ }
+    if (typeof vault !== 'undefined') vault.clear();
     S.set(blankState());
     go('');
   },
