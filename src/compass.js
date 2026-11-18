@@ -83,7 +83,16 @@ function Markdown({ text }) {
   });
 }
 
-function Compass({ p, st, open, setOpen, about, setAbout }) {
+/* Compass tags listings it recommends as [[id]]. Show those as buttons that open the listing. */
+function listingRefs(raw, p) {
+  const ids = [];
+  const text = String(raw || '')
+    .replace(/\s*\[\[([a-z0-9-]+)\]\]/gi, (m, id) => { if (!ids.includes(id)) ids.push(id); return ''; })
+    .replace(/\s*\[\[[^\]]*\]?$/, ''); // a half-written tag while the answer streams in
+  return { text, ops: ids.map((id) => opById(id, p)).filter(Boolean).slice(0, 4) };
+}
+
+function Compass({ p, st, open, setOpen, about, setAbout, onOpen }) {
   const [msgs, setMsgs] = useState([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
@@ -130,9 +139,17 @@ function Compass({ p, st, open, setOpen, about, setAbout }) {
       ${about ? html`<div class="cp-about"><span>About <b>${about.title}</b></span><button aria-label="Ask about everything instead" onClick=${() => setAbout(null)}><${Icon} n="x" s=${14} /></button></div>` : null}
       <div class="cp-msgs" ref=${listRef}>
         <div class="cp-msg ai"><p>Hi ${name}, I’m Compass. Ask me about your matches, what an application needs, or what to do next.</p></div>
-        ${msgs.map((m) => html`<div class=${cx('cp-msg', m.role === 'user' ? 'me' : 'ai')}>
-          ${m.role === 'user' ? html`<p>${m.text}</p>` : m.pending && !m.text ? html`<p class="cp-typing"><span></span><span></span><span></span></p>` : html`<${Markdown} text=${m.text} />`}
-        </div>`)}
+        ${msgs.map((m) => {
+          if (m.role === 'user') return html`<div class="cp-msg me"><p>${m.text}</p></div>`;
+          if (m.pending && !m.text) return html`<div class="cp-msg ai"><p class="cp-typing"><span></span><span></span><span></span></p></div>`;
+          const { text, ops } = listingRefs(m.text, p);
+          return html`<div class="cp-msg ai">
+            <${Markdown} text=${text} />
+            ${ops.length && !m.pending ? html`<div class="cp-links">${ops.map((o) => html`<button class="cp-link" onClick=${() => onOpen && onOpen(o)} aria-label=${`Open ${o.title}`}>
+              <span class="tl" data-t=${o.type}><i aria-hidden="true"></i></span><span class="cp-link-t">${o.title}</span><${Icon} n="arrow-right" s=${15} />
+            </button>`)}</div>` : null}
+          </div>`;
+        })}
         ${!msgs.length ? html`<div class="cp-sugg">${sugg.map((s) => html`<button onClick=${() => send(s)}>${s}</button>`)}</div>` : null}
       </div>
       <form class="cp-form" onSubmit=${(e) => { e.preventDefault(); send(); }}>

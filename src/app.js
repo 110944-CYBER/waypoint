@@ -115,7 +115,7 @@ function Home() {
     <footer class="foot wrap home-foot"><p>Waypoint prototype · <button class="btn-link" onClick=${() => setCredits(true)}>Photo credits</button></p></footer>
     ${credits ? html`<${Credits} onClose=${() => setCredits(false)} />` : null}
     ${op ? html`<${Drawer} label=${op.title} onClose=${() => setOpenId(null)}><${OppDetail} key=${op.id} op=${op} p=${p} st=${st} photo=${openPhoto} onAsk=${(o) => { setOpenId(null); setCpAbout(o); setCpOpen(true); }} /></${Drawer}>` : null}
-    <${Compass} p=${p} st=${st} open=${cpOpen} setOpen=${setCpOpen} about=${cpAbout} setAbout=${setCpAbout} />
+    <${Compass} p=${p} st=${st} open=${cpOpen} setOpen=${setCpOpen} about=${cpAbout} setAbout=${setCpAbout} onOpen=${(o) => { setCpOpen(false); setOpenPhoto(null); setOpenId(o.id); }} />
   </div>`;
 }
 

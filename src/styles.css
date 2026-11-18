@@ -384,6 +384,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .cp-typing span:nth-child(2) { animation-delay: .15s; }
 .cp-typing span:nth-child(3) { animation-delay: .3s; }
 @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+.cp-links { display: grid; gap: 6px; margin-top: 2px; }
+.cp-link { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 9px; width: 100%; padding: 9px 11px; border-radius: 11px; background: var(--surface); border: 1px solid var(--line); color: var(--ink); font-size: 13.5px; font-weight: 650; text-align: left; transition: border-color .15s, transform .15s; }
+.cp-link:hover { border-color: var(--ink-3); transform: translateY(-1px); }
+.cp-link-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cp-sugg { display: grid; gap: 8px; }
 .cp-sugg button { justify-self: start; padding: 9px 13px; border-radius: 12px; border: 1px solid var(--line); font-size: 14px; font-weight: 600; text-align: left; transition: border-color .15s; }
 .cp-sugg button:hover { border-color: var(--ink-3); }

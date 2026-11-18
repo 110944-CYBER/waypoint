@@ -409,32 +409,34 @@ function routeLabel(p) {
 /* ---------- Text for Claude ---------- */
 const AI_RULES = `You are Compass, the guide inside Waypoint, an app that helps students and graduates plan their path: internships, scholarships, job shadowing, university and postgraduate admissions, and careers.
 
-Always help. Answer every question as fully and usefully as you can, using your own knowledge of education, admissions and careers worldwide: universities, medical, law and business schools, entrance exams, timelines, CVs, essays and interviews. Never refuse, never say you don't know, and never say you can only help with Waypoint listings. If you are unsure of an exact detail such as a deadline, fee or requirement, still give your best guidance and add that the student should confirm it on the official site.
+Always help. Answer every question usefully, using your own knowledge of education, admissions and careers worldwide: universities, medical, law and business schools, entrance exams, timelines, CVs, essays and interviews. Never refuse, never say you don't know, and never say you can only help with Waypoint listings. If you are unsure of an exact detail such as a deadline, fee or requirement, still give your best guidance and add that the student should confirm it on the official site.
 
-Talk to the student directly as "you", never in the third person. Their own words come first: if their message says who or where they are (for example "as a high school student"), plan for exactly that and do not correct them with the profile. Use the Waypoint data below (profile, matches and applications) only to fill in what the message leaves out. When a goal has earlier stages (for example, medical school comes after a bachelor's degree), lay out the whole path starting from the student's current stage, without lecturing them about it. When a Waypoint listing fits a step, name it as an example; listings marked (sample) are demo listings, so present them as examples of what to look for.
+Talk to the student directly as "you", never in the third person. Their own words come first: if their message says who or where they are (for example "as a high school student"), plan for exactly that and do not correct them with the profile. Use the Waypoint data below (profile, matches and applications) only to fill in what the message leaves out. When a goal has earlier stages (for example, medical school comes after a bachelor's degree), cover the whole path from the student's current stage, without lecturing them about it.
 
-Style: warm, direct and practical. Keep quick questions short (under 120 words). For a plan, roadmap or step-by-step request, give a complete plan organized by stage or year, with concrete actions and timing (up to about 400 words). Use short paragraphs and "- " bullets, and put each stage title in **bold** on its own line. No tables. Dates marked est. are estimates.`;
+Length: always a clear summary, never too long and never too short. Lead with the answer, then only the points that matter most. Aim for 60 to 120 words for a question, and at most about 180 words for a plan or roadmap: 3 to 5 stages, one line each, with the most important actions. No padding, no long disclaimers, no headings or tables. Use short paragraphs and "- " bullets, and put stage titles in **bold**.
+
+Links: when you recommend a specific Waypoint listing from the data, write its id in double square brackets right after its name, like this: Software Engineering Intern [[orbit-swe]]. Use only ids that appear in the data. The app turns these into buttons that open the listing. Listings marked (sample) are demo listings, so present them as examples of what to look for. Dates marked est. are estimates.`;
 
 function aiContext(p, st, op) {
   const c = homeCity(p);
-  const ms = matches(p, st).slice(0, 8);
+  const ms = matches(p, st).slice(0, 12);
   const L = [];
   L.push(`Today is ${fmtDate(today(), true)}.`);
   L.push(`Student: ${(st.user && st.user.name) || 'Student'}, age ${p.age}, ${stageOf(p.stage).label}. Interests: ${p.fields.map((f) => fieldOf(f).label).join(', ') || 'open'}. Lives in ${c.name}, ${c.country}. Wants to go: ${(p.dest || []).map((d) => destLabel(d, p)).join(', ') || 'anywhere'}. Looking for: ${(p.types || []).map((t) => typeOf(t).label).join(', ') || 'everything'}.`);
   L.push(`CV status: ${(st.docs || {}).cv === 'ready' ? 'ready' : (st.docs || {}).cv === 'progress' ? 'in progress' : 'not started'}. Documents marked ready: ${Object.keys(st.docs || {}).filter((k) => st.docs[k] === 'ready').map((k) => REQ[k].label).join(', ') || 'none yet'}.`);
-  L.push('Top matches (title | type | where | deadline | readiness | still needed):');
+  L.push('Top matches (title [[id]] | type | where | deadline | readiness | still needed):');
   for (const { op: o, ready } of ms) {
     const di = deadlineInfo(o);
-    L.push(`- ${o.title}${o.sample ? ' (sample)' : ''}, ${o.org} | ${typeOf(o.type).one} | ${o.local ? o.city + ', ' + o.dist + ' km away' : o.city} | ${di.d ? fmtDate(di.d, true) + (di.est ? ' est.' : '') : 'rolling'} | ${ready.pct}% | ${missingReqs(o, p, st).join(', ') || 'nothing'}`);
+    L.push(`- ${o.title} [[${o.id}]]${o.sample ? ' (sample)' : ''}, ${o.org} | ${typeOf(o.type).one} | ${o.local ? o.city + ', ' + o.dist + ' km away' : o.city} | ${di.d ? fmtDate(di.d, true) + (di.est ? ' est.' : '') : 'rolling'} | ${ready.pct}% | ${missingReqs(o, p, st).join(', ') || 'nothing'}`);
   }
   const apps = appliedList(st).map((a) => ({ a, o: opById(a.id, p) })).filter((x) => x.o);
   if (apps.length) {
-    L.push('Applications sent (title | applied on | starts):');
-    apps.forEach(({ a, o }) => L.push(`- ${o.title}${o.sample ? ' (sample)' : ''}, ${o.org} | ${fmtDate(new Date(a.date), true)} | ${fmtDate(startOf(o), true)} est.`));
+    L.push('Applications sent (title [[id]] | applied on | starts):');
+    apps.forEach(({ a, o }) => L.push(`- ${o.title} [[${o.id}]]${o.sample ? ' (sample)' : ''}, ${o.org} | ${fmtDate(new Date(a.date), true)} | ${fmtDate(startOf(o), true)} est.`));
   }
   if (op) {
     const di = deadlineInfo(op);
-    L.push(`The student is looking at: ${op.title}${op.sample ? ' (sample)' : ''} by ${op.org}, ${op.city}. Funding: ${op.fundLabel}. Deadline: ${di.d ? fmtDate(di.d, true) + (di.est ? ' est.' : '') : 'rolling'}. Requirements: ${op.reqs.map((r) => `${r.t || REQ[r.k].label} [${reqStatus(r, op, p, st).s}]`).join('; ')}.`);
+    L.push(`The student is looking at: ${op.title} [[${op.id}]]${op.sample ? ' (sample)' : ''} by ${op.org}, ${op.city}. Funding: ${op.fundLabel}. Deadline: ${di.d ? fmtDate(di.d, true) + (di.est ? ' est.' : '') : 'rolling'}. Requirements: ${op.reqs.map((r) => `${r.t || REQ[r.k].label} [${reqStatus(r, op, p, st).s}]`).join('; ')}.`);
   }
   return L.join('\n');
 }
@@ -467,14 +469,14 @@ function guideAnswer(q, p, st, op) {
   const apps = appliedList(st).map((a) => ({ a, o: opById(a.id, p) })).filter((x) => x.o);
   if (/my application|applied|start date|when do i start|when does it start/i.test(t)) {
     return apps.length
-      ? `You have applied to ${apps.length}:\n${bullets(apps.map(({ a, o }) => `**${o.title}**, ${o.org}: applied ${fmtDate(new Date(a.date))}, starts around ${fmtDate(startOf(o), true)}`))}\n\nStart dates are estimates until the host confirms.`
+      ? `You have applied to ${apps.length}:\n${bullets(apps.map(({ a, o }) => `**${o.title}** [[${o.id}]], ${o.org}: applied ${fmtDate(new Date(a.date))}, starts around ${fmtDate(startOf(o), true)}`))}\n\nStart dates are estimates until the host confirms.`
       : 'You have not applied to anything yet. Open a match and tap **Apply now**, and it will show up under My applications with its start date.';
   }
   if (!op && /fit me|suit me|best (match|matches|fit|option|options|internships?|scholarships?)|which (internships?|scholarships?|programs?|programmes?|ones?)\b|recommend(ed)? (for )?me/i.test(t)) {
     const want = /internship/i.test(t) ? 'internship' : /scholarship/i.test(t) ? 'scholarship' : null;
     const top = ms.filter(({ op: o }) => (!want || o.type === want) && !appliedOn(st, o.id)).slice(0, 3);
     return top.length
-      ? `Your strongest ${want ? want + 's' : 'matches'} right now:\n${bullets(top.map(({ op: o, score }) => `**${o.title}**, ${o.org}: ${score}% match${deadlineOf(o) ? `, closes ${fmtDate(deadlineOf(o))}` : ''}`))}\n\nOpen any of them to see exactly what it needs.`
+      ? `Your strongest ${want ? want + 's' : 'matches'} right now:\n${bullets(top.map(({ op: o, score }) => `**${o.title}** [[${o.id}]], ${o.org}: ${score}% match${deadlineOf(o) ? `, closes ${fmtDate(deadlineOf(o))}` : ''}`))}\n\nOpen any of them to see exactly what it needs.`
       : 'Nothing strong yet. Try adding another destination or interest in Edit answers.';
   }
   if (op && /tailor|my cv|resume|résumé/i.test(t)) return cvTailor(op, p);
@@ -487,29 +489,29 @@ function guideAnswer(q, p, st, op) {
   if (/cv|resume|résumé/i.test(t)) return guideFor('cv');
   if (/fund|money|paid|afford|free|cost/i.test(t)) {
     const f = ms.filter(({ op }) => op.funding === 'full' || op.funding === 'paid').slice(0, 4);
-    return f.length ? `These matches are fully funded or paid:\n${bullets(f.map(({ op }) => `**${op.title}**: ${op.fundLabel}`))}\n\nOpen any of them to see exactly what it covers.` : 'None of your current matches are fully funded yet. Try adding another region on your profile to widen the search.';
+    return f.length ? `These matches are fully funded or paid:\n${bullets(f.map(({ op }) => `**${op.title}** [[${op.id}]]: ${op.fundLabel}`))}\n\nOpen any of them to see exactly what it covers.` : 'None of your current matches are fully funded yet. Try adding another region on your profile to widen the search.';
   }
   if (/near|local|close|shadow|weekend/i.test(t)) {
     const n = ms.filter(({ op }) => op.local).sort((a, b) => a.op.dist - b.op.dist).slice(0, 3);
-    return n.length ? `Closest to you in ${c.name}:\n${bullets(n.map(({ op }) => `**${op.title}**, ${op.org}: ${op.dist} km, next session ${fmtDay(op.session)}`))}\n\nShadowing days are short and free, and they give you real stories for your personal statement.` : `Nothing near ${c.name} matches your fields yet. The Near you tab shows everything close by.`;
+    return n.length ? `Closest to you in ${c.name}:\n${bullets(n.map(({ op }) => `**${op.title}** [[${op.id}]], ${op.org}: ${op.dist} km, next session ${fmtDay(op.session)}`))}\n\nShadowing days are short and free, and they give you real stories for your personal statement.` : `Nothing near ${c.name} matches your fields yet. The Near you tab shows everything close by.`;
   }
   if (/deadline|soon|closing|when/i.test(t)) {
     const soon = ms.filter(({ op }) => deadlineOf(op)).sort((a, b) => deadlineOf(a.op) - deadlineOf(b.op)).slice(0, 4);
-    return `Your next deadlines:\n${bullets(soon.map(({ op }) => `**${op.title}**: ${fmtDate(deadlineOf(op))} (${daysUntil(deadlineOf(op))} days)`))}\n\nOpen any of them to see what to start first.`;
+    return `Your next deadlines:\n${bullets(soon.map(({ op }) => `**${op.title}** [[${op.id}]]: ${fmtDate(deadlineOf(op))} (${daysUntil(deadlineOf(op))} days)`))}\n\nOpen any of them to see what to start first.`;
   }
   if (op && /this|chance|eligible|qualify|apply/i.test(t)) {
     const miss = missingReqs(op, p, st);
     const r = rowOf(op, p, st);
     const an = /^8/.test(String(r.score)) || r.score === 11 || r.score === 18 ? 'an' : 'a';
     const head = r.el.ok
-      ? `Yes, you can apply to **${op.title}**. It is ${an} ${r.score}% match and you are ${r.ready.pct}% ready.`
+      ? `Yes, you can apply to **${op.title}** [[${op.id}]]. It is ${an} ${r.score}% match and you are ${r.ready.pct}% ready.`
       : `Not yet. ${r.el.issues.map((i) => i.text).join('. ')}.`;
     return `${head}\n${miss.length ? `Still to do:\n${bullets(miss.slice(0, 4))}` : 'You have everything it asks for. Time to submit.'}\n\nDeadline: ${deadlineInfo(op).d ? fmtDate(deadlineInfo(op).d, true) : 'rolling'}.`;
   }
   const lines = [];
   if (nb) lines.push(`Your highest-impact step is **${REQ_ACTION[nb.k] ? REQ_ACTION[nb.k].toLowerCase() : REQ[nb.k].label}**. It is needed by ${nb.n} of your top ${nb.of} matches.`);
   if (route.length) lines.push(`Coming up on your route:\n${bullets(route.map((s) => `${fmtDate(s.date)}: ${s.title}`))}`);
-  if (ms[0]) lines.push(`Your strongest match right now is **${ms[0].op.title}** (${ms[0].score}%).`);
+  if (ms[0]) lines.push(`Your strongest match right now is **${ms[0].op.title}** [[${ms[0].op.id}]] (${ms[0].score}%).`);
   return lines.join('\n\n') || 'Tell me what you are working on and I will suggest the next step.';
 }
 
