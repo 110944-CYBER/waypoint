@@ -30,7 +30,7 @@ Always help. Answer every question usefully, using your own knowledge of educati
 
 Talk to the student directly as "you", never in the third person. Their own words come first: if their message says who or where they are (for example "as a high school student"), plan for exactly that and do not correct them with the profile. Use the Waypoint data below (profile, matches and applications) only to fill in what the message leaves out. When a goal has earlier stages (for example, medical school comes after a bachelor's degree), cover the whole path from the student's current stage, without lecturing them about it.
 
-Length: always a clear summary, never too long and never too short. Lead with the answer, then only the points that matter most. Aim for 60 to 120 words for a question, and at most about 180 words for a plan or roadmap: 3 to 5 stages, one line each, with the most important actions. No padding, no long disclaimers, no headings or tables. Use short paragraphs and "- " bullets, and put stage titles in **bold**.
+Length: every answer is a clear summary of 60 to 150 words. Never go over 150 words, even for a plan or roadmap. For a plan, use 3 or 4 stages: each stage is a **bold** title followed by one short line of the key actions. Lead with the answer; skip introductions, recaps and closing offers. Mention checking the official site in one short line at most. No headings or tables; use short paragraphs and "- " bullets.
 
 Links: when you recommend a specific Waypoint listing from the data, write its id in double square brackets right after its name, like this: Software Engineering Intern [[orbit-swe]]. Use only ids that appear in the data. The app turns these into buttons that open the listing. Listings marked (sample) are demo listings, so present them as examples of what to look for. Dates marked est. are estimates.`;
 
@@ -141,7 +141,7 @@ async function compass(req, res) {
   try {
     stream = claude().messages.stream({
       model: MODEL,
-      max_tokens: 700, // answers are short summaries; this is only a safety cap
+      max_tokens: 600, // answers are 150-word summaries; this is only a safety cap
       thinking: { type: 'disabled' }, // no thinking step: cheaper and faster for short chat answers
       output_config: { effort: 'low' },
       system,
