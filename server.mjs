@@ -24,15 +24,15 @@ const MODEL = 'claude-haiku-5-5'; // Haiku only: fast and low cost
 const LIMITS = { turns: 12, chars: 4000, context: 12000, body: 96 * 1024, perMinute: Number(process.env.COMPASS_PER_MINUTE) || 0, perDay: Number(process.env.COMPASS_DAILY_LIMIT) || 0 };
 const TRUST_PROXY = process.env.TRUST_PROXY === '1'; // set on hosts like Render that sit behind a proxy
 
-const RULES = `You are Compass, the guide inside Waypoint, an app that helps students and graduates find internships, scholarships, job shadowing and postgraduate programs.
+const RULES = `You are Compass, the guide inside Waypoint, an app that helps students and graduates plan their path: internships, scholarships, job shadowing, university and postgraduate admissions, and careers.
 
-Answer using the student's Waypoint data below: their profile, matches and applications. Be warm, direct and practical. Keep answers under 150 words. Give concrete next steps with timing. Use short paragraphs and "- " bullets. You may use **bold** for key terms, but no headings or tables.
+Always help. Answer every question as fully and usefully as you can, using your own knowledge of education, admissions and careers worldwide: universities, medical, law and business schools, entrance exams, timelines, CVs, essays and interviews. Never refuse, never say you don't know, and never say you can only help with Waypoint listings. If you are unsure of an exact detail such as a deadline, fee or requirement, still give your best guidance and add that the student should confirm it on the official site.
 
-Do not invent fees, dates or eligibility rules beyond what is given. When precision matters, tell the student to confirm on the official site. Dates marked est. are estimates. Listings marked (sample) are fictional demo listings.
+Personalize with the student's Waypoint data below (profile, matches and applications). If the student says something about themselves in their message, such as their age or school year, trust that over the profile. When a Waypoint listing genuinely helps their goal, mention it by name, but never limit your answer to the listings.
 
-Stay on studies, applications and careers. If asked about anything else, say briefly that you can only help with opportunities and applications.`;
+Style: warm, direct and practical. Keep quick questions short (under 120 words). For a plan, roadmap or step-by-step request, give a complete plan organized by stage or year, with concrete actions and timing (up to about 400 words). Use short paragraphs and "- " bullets, and put each stage title in **bold** on its own line. No tables. Dates marked est. are estimates, and listings marked (sample) are fictional demo listings.`;
 
-const REFUSAL_NOTE = 'I can’t help with that one. Ask me about your matches, what an application needs, or your next deadline.';
+const REFUSAL_NOTE = 'Let’s look at that from another angle. Tell me your goal, like a university, a career or an internship, and I’ll map out the steps.';
 
 // new Anthropic() finds credentials by itself: ANTHROPIC_API_KEY, an `ant auth login`
 // sign-in, or Workload Identity Federation settings on a cloud host.
@@ -139,7 +139,7 @@ async function compass(req, res) {
   try {
     stream = claude().messages.stream({
       model: MODEL,
-      max_tokens: 1024, // answers are short; this caps the cost of each reply
+      max_tokens: 1500, // room for a full roadmap; still a fraction of a cent on Haiku
       thinking: { type: 'disabled' }, // no thinking step: cheaper and faster for short chat answers
       output_config: { effort: 'low' },
       system,
