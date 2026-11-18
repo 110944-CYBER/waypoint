@@ -9,7 +9,7 @@ const canHover = () => !!(window.matchMedia && window.matchMedia('(hover: hover)
 
 /* ---------- Store (per viewer, kept in this browser only) ---------- */
 const STORE_KEY = 'waypoint.prototype.v2';
-const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, files: {}, details: {}, theme: null, pro: null });
+const blankState = () => ({ v: 2, user: null, profile: null, saved: [], dismissed: [], applied: [], docs: {}, files: {}, details: {}, theme: null, pro: null });
 function loadState() {
   try {
     const raw = localStorage.getItem(STORE_KEY);
@@ -72,6 +72,11 @@ const A = {
     S.set({ saved: on ? S.state.saved.filter((x) => x !== id) : S.state.saved.concat(id) });
     toast(on ? 'Removed from saved' : 'Saved', on ? 'bookmark' : 'bookmark-check');
   },
+  save(id) { if (!S.state.saved.includes(id)) S.set({ saved: S.state.saved.concat(id) }); },
+  unsave(id) { S.set({ saved: S.state.saved.filter((x) => x !== id) }); },
+  dismiss(id) { const d = S.state.dismissed || []; if (!d.includes(id)) S.set({ dismissed: d.concat(id) }); },
+  undismiss(id) { S.set({ dismissed: (S.state.dismissed || []).filter((x) => x !== id) }); },
+  clearDismissed() { S.set({ dismissed: [] }); },
   setDoc(k, v) {
     const docs = Object.assign({}, S.state.docs);
     if (v) docs[k] = v; else delete docs[k];

@@ -69,9 +69,10 @@ function applyWarning(op, p, st) {
 
 /* ---------- The header tabs ---------- */
 function TopNav({ active }) {
-  const tab = (id, label, icon) => html`<a class=${cx('topnav-a', active === id && 'on')} href=${'#' + id} aria-label=${label} title=${label} aria-current=${active === id ? 'page' : null}
-    onClick=${(e) => { e.preventDefault(); go(id); }}><${Icon} n=${icon} s=${17} /><span>${label}</span></a>`;
-  return html`<nav class="topnav" aria-label="Sections">${tab('home', 'Matches', 'sparkles')}${tab('documents', 'My documents', 'folder-open')}</nav>`;
+  const tab = (id, label, icon, count) => html`<a class=${cx('topnav-a', active === id && 'on')} href=${'#' + id} aria-label=${count ? `${label}, ${count}` : label} title=${label} aria-current=${active === id ? 'page' : null}
+    onClick=${(e) => { e.preventDefault(); go(id); }}><${Icon} n=${icon} s=${17} /><span>${label}</span>${count ? html`<em class="topnav-n">${count}</em>` : null}</a>`;
+  const n = (S.state.saved || []).length;
+  return html`<nav class="topnav" aria-label="Sections">${tab('home', 'Matches', 'sparkles')}${tab('picks', 'Quick picks', 'layers')}${tab('saved', 'Saved', 'bookmark', n)}${tab('calendar', 'Calendar', 'calendar')}${tab('documents', 'My documents', 'folder-open')}</nav>`;
 }
 
 /* ---------- Apply with saved info ---------- */

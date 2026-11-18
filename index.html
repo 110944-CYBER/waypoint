@@ -280,6 +280,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .card-off .card-t { color: var(--ink-2); }
 .ci-req { font-size: 12.5px; font-weight: 700; color: var(--ink-3); padding: 0 6px; }
 .ci-intro { margin-top: -14px; }
+.ci-name { max-width: 480px; height: 64px; padding: 0 18px; border-radius: 14px; font: 700 24px/1 var(--f-display); }
 @media (max-width: 760px) {
   .search { flex: 1 1 100%; }
   .sec-rec { padding: 16px; margin: 0 -4px; }
@@ -544,8 +545,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 @media (max-width: 640px) {
   .topnav { margin-left: 8px; }
-  .topnav-a { padding: 0 10px; }
-  .topnav-a span { display: none; }
   .home .top .logo > span { display: none; }
   .pro-pill-tx { display: none; }
   .pro-pill { width: 34px; padding: 0; justify-content: center; }
@@ -553,6 +552,155 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .doc { grid-template-columns: auto minmax(0, 1fr); }
   .doc-acts { grid-column: 1 / -1; justify-content: flex-end; }
   .app { grid-template-areas: "img main" "dates dates" "info info" "warn warn"; }
+}
+
+
+/* ---------- Header tab count ---------- */
+.topnav-a { position: relative; }
+.topnav-n { font-style: normal; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 99px; background: var(--accent); color: #fff; font: 800 11.5px/20px var(--f-display); text-align: center; }
+
+/* ---------- Quick picks (swipe) ---------- */
+.swipe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 32px; align-items: center; padding: 32px 36px; border-radius: 24px; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 9%, var(--surface)), var(--surface) 60%); border: 1px solid var(--line); outline: none; }
+.swipe:focus-visible { box-shadow: 0 0 0 4px color-mix(in srgb, var(--focus) 30%, transparent); }
+.swipe-side { display: grid; gap: 14px; align-content: center; }
+.swipe-h { display: flex; align-items: center; gap: 12px; font: 800 clamp(30px, 3.4vw, 40px)/1.05 var(--f-display); letter-spacing: -.03em; }
+.swipe-h svg { color: var(--accent); }
+.swipe-p { color: var(--ink-2); font-size: 15.5px; max-width: 30em; }
+.swipe-stats { display: flex; gap: 26px; }
+.swipe-stats span { display: grid; font-size: 13px; color: var(--ink-3); }
+.swipe-stats b { font: 800 24px/1.1 var(--f-display); color: var(--ink); }
+.swipe-bar { display: grid; gap: 16px; justify-items: start; }
+.pz-s { display: none; }
+.swipe-keys { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); }
+.swipe-keys kbd { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 5px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; background: var(--surface); color: var(--ink-2); font: 700 12px/1 var(--f-display); }
+.swipe-keys kbd + kbd { margin-right: 4px; }
+@media (hover: none) { .swipe-keys { display: none; } }
+.swipe-stage { display: grid; gap: 16px; justify-items: center; }
+.sw-stack { position: relative; width: 100%; max-width: 380px; height: 470px; }
+.sw-card { position: absolute; inset: 0; display: grid; grid-template-rows: minmax(140px, 1fr) auto; overflow: hidden; border-radius: 22px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-lg); touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab; --like: 0; --nope: 0; animation: swIn .3s var(--ease); }
+.sw-card:active { cursor: grabbing; }
+.sw-card.sw-next { transform: translateY(14px) scale(.94); pointer-events: none; animation: none; box-shadow: var(--shadow-sm); }
+@keyframes swIn { from { transform: translateY(14px) scale(.94); } }
+.sw-img { position: relative; }
+.sw-img .ph { position: absolute; inset: 0; }
+.sw-card img { -webkit-user-drag: none; pointer-events: none; }
+.stamp { position: absolute; top: 18px; padding: 6px 12px; border: 3px solid currentColor; border-radius: 10px; font: 800 22px/1 var(--f-display); letter-spacing: .08em; text-transform: uppercase; background: rgba(5, 7, 12, .45); pointer-events: none; }
+.stamp.like { left: 18px; color: #34D399; transform: rotate(-12deg); opacity: var(--like); }
+.stamp.nope { right: 18px; color: #F87171; transform: rotate(12deg); opacity: var(--nope); }
+.sw-body { display: grid; gap: 12px; align-content: start; padding: 16px 18px 18px; }
+.sw-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: start; }
+.sw-tx { display: grid; gap: 4px; min-width: 0; }
+.sw-t { font: 800 20px/1.2 var(--f-display); letter-spacing: -.01em; }
+.sw-o { font-size: 13.5px; color: var(--ink-2); }
+.sw-pts { display: grid; gap: 6px; padding-left: 18px; list-style: disc; font-size: 14px; color: var(--ink-2); }
+.sw-pts li::marker { color: var(--accent); }
+.sw-pts li span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sw-btns { display: flex; align-items: center; gap: 16px; }
+.sw-btn { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm); color: var(--ink-2); transition: transform .15s var(--ease), box-shadow .15s; }
+.sw-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.sw-btn.like, .sw-btn.nope { width: 64px; height: 64px; }
+.sw-btn.like { color: #fff; background: var(--ok); border-color: transparent; }
+.sw-btn.nope { color: var(--urgent); }
+.sw-btn:disabled { opacity: .35; cursor: default; transform: none; box-shadow: none; }
+.picks { width: 100%; max-width: 400px; display: grid; gap: 12px; padding: 18px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-md); }
+.picks-h { font: 800 18px/1.2 var(--f-display); }
+.picks-list { display: grid; gap: 4px; max-height: 300px; overflow-y: auto; }
+.pick { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; padding: 6px; border-radius: 12px; text-align: left; color: var(--ink-3); }
+.pick:hover { background: var(--surface-2); }
+.pick-img { width: 52px; height: 52px; border-radius: 10px; }
+.pick-tx { display: grid; line-height: 1.3; min-width: 0; }
+.pick-tx b { font-size: 14.5px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pick-tx span { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.picks-empty { color: var(--ink-2); font-size: 14.5px; }
+.picks-acts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.swipe-end { display: grid; gap: 10px; justify-items: center; text-align: center; max-width: 340px; padding: 30px 20px; }
+.swipe-end-ic { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: var(--surface-2); color: var(--accent); }
+.swipe-end b { font: 800 20px/1.2 var(--f-display); }
+.swipe-end p { color: var(--ink-2); font-size: 14.5px; }
+
+/* ---------- Saved ---------- */
+.empty-card { display: grid; justify-items: center; gap: 12px; padding: 44px 20px; border-radius: 20px; background: var(--surface); border: 1px dashed var(--line); text-align: center; }
+.empty-card b { font: 800 19px/1.2 var(--f-display); }
+.empty-ic { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--surface-2); color: var(--ink-2); }
+
+/* ---------- Calendar ---------- */
+.cal { display: grid; gap: 14px; }
+.cal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.cal-title { font: 800 26px/1.1 var(--f-display); letter-spacing: -.02em; }
+.cal-nav { display: flex; align-items: center; gap: 6px; }
+.cal-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; font-size: 13.5px; color: var(--ink-2); }
+.lg { display: inline-flex; align-items: center; gap: 6px; }
+.lg i { width: 10px; height: 10px; border-radius: 3px; }
+.lg.deadline i { background: var(--accent); }
+.lg.start i { background: var(--ok); }
+.cal-note { color: var(--ink-3); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--surface); }
+.cal-wd { padding: 10px 8px; font-size: 12px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--line); }
+.cal-day { position: relative; display: grid; grid-template-rows: auto 1fr; align-content: start; gap: 5px; min-height: 108px; padding: 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); cursor: pointer; outline: none; transition: background-color .12s; }
+.cal-day:nth-child(7n) { border-right: 0; }
+.cal-day:hover, .cal-day:focus-visible { background: var(--surface-2); }
+.cal-day.out { background: color-mix(in srgb, var(--surface-2) 55%, transparent); }
+.cal-day.out .cal-num { color: var(--ink-3); }
+.cal-num { font: 700 14px/26px var(--f-display); height: 26px; }
+.cal-day.today .cal-num { display: grid; place-items: center; width: 26px; border-radius: 50%; background: var(--accent); color: #fff; line-height: 1; }
+.cal-day.sel { box-shadow: inset 0 0 0 2px var(--ink-2); }
+.cal-evs { display: grid; gap: 3px; align-content: start; min-width: 0; }
+.cal-ev { display: block; padding: 3px 6px; border-radius: 6px; font-size: 11.5px; font-weight: 700; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cal-ev:hover { filter: brightness(1.15); }
+.cal-ev.deadline { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+.cal-ev.start { background: color-mix(in srgb, var(--ok) 16%, transparent); color: var(--ok); }
+.cal-more { font-size: 11.5px; color: var(--ink-3); padding-left: 6px; }
+.cal-dots { display: none; gap: 3px; justify-content: center; }
+.cal-dots i { width: 6px; height: 6px; border-radius: 50%; }
+.cal-dots i.deadline { background: var(--accent); }
+.cal-dots i.start { background: var(--ok); }
+.cal-agenda { display: grid; gap: 10px; margin-top: 8px; }
+.cal-agenda-h { display: flex; align-items: center; justify-content: space-between; }
+.cal-agenda-h h3 { font: 800 19px/1.2 var(--f-display); }
+.agenda { display: grid; gap: 8px; }
+.ag { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 14px; align-items: center; width: 100%; padding: 10px 14px 10px 10px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); text-align: left; color: var(--ink-3); transition: border-color .15s; }
+.ag:hover { border-color: var(--ink-3); }
+.ag-date { display: grid; place-items: center; align-content: center; width: 56px; height: 56px; border-radius: 12px; background: var(--surface-2); line-height: 1.1; }
+.ag-date b { font: 800 20px/1 var(--f-display); color: var(--ink); }
+.ag-date span { font-size: 12px; text-transform: uppercase; }
+.ag-main { display: grid; gap: 2px; min-width: 0; line-height: 1.3; }
+.ag-main b { font-size: 15px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-main > span:last-child { font-size: 13px; }
+.ag-kind { font-size: 11.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.ag-kind.deadline { color: var(--accent); }
+.ag-kind.start { color: var(--ok); }
+
+@media (max-width: 980px) {
+  .topnav-a { padding: 0 10px; }
+  .topnav-a span { display: none; }
+  .topnav-n { position: absolute; top: 1px; right: -2px; min-width: 17px; height: 17px; padding: 0 4px; font-size: 10px; line-height: 17px; }
+}
+@media (max-width: 860px) {
+  .swipe { grid-template-columns: minmax(0, 1fr); padding: 20px; }
+  .swipe-keys { display: none; }
+}
+@media (max-width: 640px) {
+  .swipe { padding: 14px; gap: 14px; border-radius: 20px; }
+  .swipe-p2 { display: none; }
+  .sw-pts li:nth-child(n+4) { display: none; }
+  .swipe-side { gap: 10px; }
+  .swipe-h { font-size: 26px; gap: 10px; }
+  .swipe-h svg { width: 22px; height: 22px; }
+  .swipe-p { font-size: 14.5px; }
+  .swipe-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .swipe-stats { gap: 18px; }
+  .swipe-stats b { font-size: 20px; }
+  .pz-l { display: none; }
+  .pz-s { display: inline; }
+  .sw-stack { height: 410px; }
+  .sw-card { grid-template-rows: minmax(120px, 1fr) auto; }
+  .sw-body { padding: 14px 16px 16px; gap: 10px; }
+  .sw-t { font-size: 18.5px; }
+  .cal-day { min-height: 58px; padding: 6px 2px; justify-items: center; }
+  .cal-evs { display: none; }
+  .cal-dots { display: flex; }
+  .cal-wd { padding: 8px 2px; text-align: center; font-size: 11px; }
+  .cal-title { font-size: 22px; }
 }
 
 /* ---------- Toasts ---------- */
@@ -584,6 +732,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .next > .btn { grid-column: 1 / -1; justify-self: start; }
   .next-how { padding-left: 0; }
   .age { gap: 16px; }
+}
+
+/* Five header tabs on the narrowest phones (after the 980px rule so it wins) */
+@media (max-width: 400px) {
+  .topnav { gap: 0; margin-left: 2px; }
+  .topnav-a { padding: 0 8px; }
 }
 
 </style>
@@ -2129,7 +2283,7 @@ const canHover = () => !!(window.matchMedia && window.matchMedia('(hover: hover)
 
 /* ---------- Store (per viewer, kept in this browser only) ---------- */
 const STORE_KEY = 'waypoint.prototype.v2';
-const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, files: {}, details: {}, theme: null, pro: null });
+const blankState = () => ({ v: 2, user: null, profile: null, saved: [], dismissed: [], applied: [], docs: {}, files: {}, details: {}, theme: null, pro: null });
 function loadState() {
   try {
     const raw = localStorage.getItem(STORE_KEY);
@@ -2192,6 +2346,11 @@ const A = {
     S.set({ saved: on ? S.state.saved.filter((x) => x !== id) : S.state.saved.concat(id) });
     toast(on ? 'Removed from saved' : 'Saved', on ? 'bookmark' : 'bookmark-check');
   },
+  save(id) { if (!S.state.saved.includes(id)) S.set({ saved: S.state.saved.concat(id) }); },
+  unsave(id) { S.set({ saved: S.state.saved.filter((x) => x !== id) }); },
+  dismiss(id) { const d = S.state.dismissed || []; if (!d.includes(id)) S.set({ dismissed: d.concat(id) }); },
+  undismiss(id) { S.set({ dismissed: (S.state.dismissed || []).filter((x) => x !== id) }); },
+  clearDismissed() { S.set({ dismissed: [] }); },
   setDoc(k, v) {
     const docs = Object.assign({}, S.state.docs);
     if (v) docs[k] = v; else delete docs[k];
@@ -4262,9 +4421,10 @@ function applyWarning(op, p, st) {
 
 /* ---------- The header tabs ---------- */
 function TopNav({ active }) {
-  const tab = (id, label, icon) => html`<a class=${cx('topnav-a', active === id && 'on')} href=${'#' + id} aria-label=${label} title=${label} aria-current=${active === id ? 'page' : null}
-    onClick=${(e) => { e.preventDefault(); go(id); }}><${Icon} n=${icon} s=${17} /><span>${label}</span></a>`;
-  return html`<nav class="topnav" aria-label="Sections">${tab('home', 'Matches', 'sparkles')}${tab('documents', 'My documents', 'folder-open')}</nav>`;
+  const tab = (id, label, icon, count) => html`<a class=${cx('topnav-a', active === id && 'on')} href=${'#' + id} aria-label=${count ? `${label}, ${count}` : label} title=${label} aria-current=${active === id ? 'page' : null}
+    onClick=${(e) => { e.preventDefault(); go(id); }}><${Icon} n=${icon} s=${17} /><span>${label}</span>${count ? html`<em class="topnav-n">${count}</em>` : null}</a>`;
+  const n = (S.state.saved || []).length;
+  return html`<nav class="topnav" aria-label="Sections">${tab('home', 'Matches', 'sparkles')}${tab('picks', 'Quick picks', 'layers')}${tab('saved', 'Saved', 'bookmark', n)}${tab('calendar', 'Calendar', 'calendar')}${tab('documents', 'My documents', 'folder-open')}</nav>`;
 }
 
 /* ---------- Apply with saved info ---------- */
@@ -4408,6 +4568,291 @@ function Documents() {
   </div>`;
 }
 
+/* ---- swipe.js ---- */
+/* ==========================================================================
+   Waypoint · Quick picks: one card at a time. Swipe right to save it,
+   left to skip it. Cards come from the student's answers, learn from what
+   they save or skip, and never repeat.
+   ========================================================================== */
+
+const SWIPE_OUT = 110; // px past which letting go counts as a swipe
+
+/* Every open opportunity not yet saved, skipped or applied to, best first.
+   Saving or skipping nudges similar cards up or down. */
+function swipeQueue(p, st) {
+  const seen = new Set([...(st.saved || []), ...(st.dismissed || []), ...appliedList(st).map((a) => a.id)]);
+  const liked = (st.saved || []).map((id) => opById(id, p)).filter(Boolean);
+  const skipped = (st.dismissed || []).map((id) => opById(id, p)).filter(Boolean);
+  const boost = (op) => {
+    let b = 0;
+    for (const o of liked) { if (o.type === op.type) b += 3; if (o.fields.some((f) => op.fields.includes(f))) b += 4; }
+    for (const o of skipped) { if (o.type === op.type) b -= 2; if (o.fields.some((f) => op.fields.includes(f))) b -= 2; }
+    return Math.max(-24, Math.min(24, b));
+  };
+  return evaluate(p, st)
+    .filter((r) => r.el.ok && !seen.has(r.op.id))
+    .map((r) => ({ r, s: r.score + boost(r.op) }))
+    .sort((a, b) => b.s - a.s)
+    .map((x) => x.r);
+}
+
+function swipePoints(op, p) {
+  const di = deadlineInfo(op);
+  const why = matchReasons(op, p).find((m) => m.ok && m.k === 'field');
+  return [
+    !di.d ? 'Open all year' : di.days <= 1 ? di.label : `Closes ${fmtDate(di.d)} · ${di.days} days left`,
+    moneyOf(op),
+    op.duration,
+    why ? why.text : null,
+  ].filter(Boolean).slice(0, 4);
+}
+
+function SwipeCard({ row, p, next, cardRef, h }) {
+  const op = row.op;
+  return html`<div class=${cx('sw-card', next && 'sw-next')} data-id=${op.id} ref=${next ? null : cardRef} aria-hidden=${next ? 'true' : null}
+    onPointerDown=${h && h.down} onPointerMove=${h && h.move} onPointerUp=${h && h.up} onPointerCancel=${h && h.cancel}
+    onDragStart=${(e) => e.preventDefault()}>
+    <div class="sw-img">
+      <${OppImage} op=${op} cls="sw-ph" />
+      <span class="stamp like">Save</span><span class="stamp nope">Skip</span>
+    </div>
+    <div class="sw-body">
+      <div class="sw-top">
+        <span class="sw-tx"><${TypeLabel} t=${op.type} /><b class="sw-t">${op.title}</b><span class="sw-o">${op.org} · ${placeOf(op)}</span></span>
+        <${MatchRing} v=${row.score} size=${48} />
+      </div>
+      <ul class="sw-pts">${swipePoints(op, p).map((t) => html`<li><span>${t}</span></li>`)}</ul>
+    </div>
+  </div>`;
+}
+
+function SwipeDeck({ p, st, onOpen }) {
+  const [paused, setPaused] = useState(false);
+  const [picks, setPicks] = useState([]); // saved in this sitting, newest first
+  const [last, setLast] = useState(null); // { id, act } for Undo
+  const cardRef = useRef();
+  const drag = useRef(null);
+  const busy = useRef(false);
+  const queue = swipeQueue(p, st);
+  const row = queue[0];
+  const nextRow = queue[1];
+
+  const commit = (op, act) => {
+    if (act === 'save') { A.save(op.id); setPicks((x) => [op.id].concat(x.filter((i) => i !== op.id))); }
+    else A.dismiss(op.id);
+    setLast({ id: op.id, act });
+    busy.current = false;
+  };
+  const fly = (dir, dy = 0) => {
+    const el = cardRef.current;
+    if (!el || !row || busy.current) return;
+    busy.current = true;
+    const op = row.op;
+    el.style.animation = 'none';
+    el.style.transition = 'transform .3s ease-in, opacity .3s ease-in';
+    el.style.transform = `translate(${dir * 680}px, ${dy * 0.3}px) rotate(${dir * 24}deg)`;
+    el.style.opacity = '0';
+    setTimeout(() => commit(op, dir > 0 ? 'save' : 'skip'), reducedMotion() ? 0 : 230);
+  };
+  const reset = (el) => {
+    el.style.transition = 'transform .25s var(--ease)';
+    el.style.transform = '';
+    el.style.setProperty('--like', 0);
+    el.style.setProperty('--nope', 0);
+  };
+  const h = {
+    down(e) {
+      if (busy.current || (e.button != null && e.button !== 0)) return;
+      drag.current = { x: e.clientX, y: e.clientY, dx: 0, dy: 0, moved: false };
+      e.currentTarget.setPointerCapture(e.pointerId);
+      e.currentTarget.style.animation = 'none';
+      e.currentTarget.style.transition = 'none';
+    },
+    move(e) {
+      const d = drag.current;
+      if (!d) return;
+      d.dx = e.clientX - d.x;
+      d.dy = e.clientY - d.y;
+      if (Math.abs(d.dx) > 6 || Math.abs(d.dy) > 6) d.moved = true;
+      const el = e.currentTarget;
+      el.style.transform = `translate(${d.dx}px, ${d.dy * 0.3}px) rotate(${d.dx / 18}deg)`;
+      el.style.setProperty('--like', Math.max(0, Math.min(1, d.dx / SWIPE_OUT)));
+      el.style.setProperty('--nope', Math.max(0, Math.min(1, -d.dx / SWIPE_OUT)));
+    },
+    up(e) {
+      const d = drag.current;
+      drag.current = null;
+      if (!d) return;
+      const el = e.currentTarget;
+      if (!d.moved) { reset(el); onOpen(row.op); return; }
+      if (Math.abs(d.dx) > SWIPE_OUT) fly(d.dx > 0 ? 1 : -1, d.dy);
+      else reset(el);
+    },
+    cancel(e) { drag.current = null; reset(e.currentTarget); },
+  };
+  const undo = () => {
+    if (!last) return;
+    if (last.act === 'save') { A.unsave(last.id); setPicks((x) => x.filter((i) => i !== last.id)); }
+    else A.undismiss(last.id);
+    setLast(null);
+  };
+  // Arrow keys work anywhere on the page, except while typing or with a panel open.
+  const keyRef = useRef();
+  keyRef.current = (e) => {
+    if (paused || !row || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+    const a = document.activeElement;
+    if (document.querySelector('.drawer, .pro-sheet, .compass') || (a && a.closest && a.closest('input, textarea, select, [contenteditable="true"]'))) return;
+    e.preventDefault();
+    fly(e.key === 'ArrowRight' ? 1 : -1);
+  };
+  useEffect(() => {
+    const k = (e) => keyRef.current(e);
+    window.addEventListener('keydown', k);
+    return () => window.removeEventListener('keydown', k);
+  }, []);
+
+  const pickIds = picks.length ? picks : (st.saved || []).slice().reverse();
+  const pickOps = pickIds.map((id) => opById(id, p)).filter(Boolean);
+  const skippedN = (st.dismissed || []).length;
+
+  return html`<section class="swipe" aria-labelledby="qp-h">
+    <div class="swipe-side">
+      <h1 id="qp-h" class="swipe-h"><${Icon} n="layers" s=${28} />Quick picks</h1>
+      <p class="swipe-p">Swipe right to save, left to skip.<span class="swipe-p2"> Picked from your answers, and it learns as you go.</span></p>
+      <div class="swipe-bar">
+        <div class="swipe-stats">
+          <span><b>${(st.saved || []).length}</b>saved</span>
+          <span><b>${skippedN}</b>skipped</span>
+          <span><b>${queue.length}</b>to go</span>
+        </div>
+        <button class="btn btn-secondary btn-sm swipe-pause" onClick=${() => setPaused(!paused)}>
+          <${Icon} n=${paused ? 'layers' : 'list-checks'} s=${16} />${paused ? 'Keep swiping' : html`<span class="pz-l">Pause and see my picks</span><span class="pz-s">My picks</span>`}
+        </button>
+      </div>
+      <p class="swipe-keys" aria-hidden="true"><kbd>←</kbd><kbd>→</kbd>Skip or save with your arrow keys</p>
+    </div>
+
+    <div class="swipe-stage">
+      ${paused ? html`<div class="picks">
+          <h3 class="picks-h">${picks.length ? `You picked ${picks.length} just now` : pickOps.length ? `Your saved picks (${pickOps.length})` : 'No picks yet'}</h3>
+          ${pickOps.length ? html`<ul class="picks-list">${pickOps.slice(0, 8).map((o) => html`<li key=${o.id}><button class="pick" onClick=${() => onOpen(o)}>
+              <${OppImage} op=${o} cls="pick-img" /><span class="pick-tx"><b>${o.title}</b><span>${o.org} · ${placeOf(o)}</span></span><${Icon} n="chevron-right" s=${18} />
+            </button></li>`)}</ul>` : html`<p class="picks-empty">Swipe right on anything you like and it shows up here.</p>`}
+          <div class="picks-acts">
+            <button class="btn btn-primary" onClick=${() => setPaused(false)}><${Icon} n="layers" s=${16} />Keep swiping</button>
+            <button class="btn btn-secondary" onClick=${() => go('saved')}>All saved</button>
+          </div>
+        </div>`
+      : row ? html`
+        <div class="sw-stack">
+          ${nextRow ? html`<${SwipeCard} key=${'n' + nextRow.op.id} row=${nextRow} p=${p} next />` : null}
+          <${SwipeCard} key=${row.op.id} row=${row} p=${p} cardRef=${cardRef} h=${h} />
+        </div>
+        <div class="sw-btns">
+          <button class="sw-btn undo" aria-label="Undo last swipe" title="Undo" disabled=${!last} onClick=${undo}><${Icon} n="undo-2" s=${20} /></button>
+          <button class="sw-btn nope" aria-label=${`Skip ${row.op.title}`} title="Skip" onClick=${() => fly(-1)}><${Icon} n="x" s=${26} w=${2.4} /></button>
+          <button class="sw-btn like" aria-label=${`Save ${row.op.title}`} title="Save" onClick=${() => fly(1)}><${Icon} n="heart" s=${26} w=${2.2} /></button>
+          <button class="sw-btn info" aria-label=${`Details for ${row.op.title}`} title="Details" onClick=${() => onOpen(row.op)}><${Icon} n="info" s=${20} /></button>
+        </div>`
+      : html`<div class="swipe-end">
+          <span class="swipe-end-ic"><${Icon} n="party-popper" s=${28} /></span>
+          <b>You’ve seen every match</b>
+          <p>Edit your answers for new ones${skippedN ? ', or look again at the ones you skipped' : ''}.</p>
+          <div class="picks-acts">
+            ${skippedN ? html`<button class="btn btn-primary" onClick=${() => A.clearDismissed()}>Review ${skippedN} skipped</button>` : null}
+            <button class="btn btn-secondary" onClick=${() => go('check-in')}>Edit answers</button>
+          </div>
+        </div>`}
+    </div>
+  </section>`;
+}
+
+/* ---- calendar.js ---- */
+/* ==========================================================================
+   Waypoint · Calendar: a month view of deadlines and start dates for what
+   the student saved and applied to (or their top matches until then).
+   ========================================================================== */
+
+const dayKey = (d) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+
+function calEvents(p, st) {
+  const ids = [...new Set(appliedList(st).map((a) => a.id).concat(st.saved || []))];
+  const own = ids.length > 0;
+  const ops = own ? ids.map((id) => opById(id, p)).filter(Boolean) : matches(p, st).slice(0, 8).map((m) => m.op);
+  const ev = [];
+  for (const op of ops) {
+    const applied = !!appliedOn(st, op.id);
+    const di = deadlineInfo(op);
+    if (di.d && !applied) ev.push({ d: di.d, kind: 'deadline', op, est: di.est });
+    ev.push({ d: startOf(op), kind: 'start', op, applied });
+  }
+  ev.sort((a, b) => a.d - b.d || (a.kind === 'deadline' ? -1 : 1));
+  return { ev, own };
+}
+
+function CalendarView({ p, st, onOpen }) {
+  const t = today();
+  const [ym, setYm] = useState([t.getFullYear(), t.getMonth()]);
+  const [sel, setSel] = useState(null); // a selected day's time, or null
+  const { ev, own } = calEvents(p, st);
+  const byDay = {};
+  ev.forEach((e) => { (byDay[dayKey(e.d)] = byDay[dayKey(e.d)] || []).push(e); });
+  const first = new Date(ym[0], ym[1], 1);
+  const cells = [];
+  for (let i = 0; i < 42; i++) cells.push(new Date(ym[0], ym[1], 1 - first.getDay() + i));
+  const shown = cells[35].getMonth() !== ym[1] ? cells.slice(0, 35) : cells;
+  const title = first.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+  const shift = (n) => { setYm(([y, m]) => { const d = new Date(y, m + n, 1); return [d.getFullYear(), d.getMonth()]; }); setSel(null); };
+  const selDate = sel != null ? new Date(sel) : null;
+  const list = selDate ? byDay[dayKey(selDate)] || [] : ev.filter((e) => e.d >= t).slice(0, 8);
+  const label = (e) => `${e.kind === 'deadline' ? 'Closes' : 'Starts'}: ${e.op.title}`;
+
+  return html`<section class="cal" aria-label="Calendar">
+    <div class="cal-head">
+      <h2 class="cal-title">${title}</h2>
+      <div class="cal-nav">
+        <button class="icon-btn" aria-label="Previous month" onClick=${() => shift(-1)}><${Icon} n="chevron-left" s=${20} /></button>
+        <button class="btn btn-sm btn-secondary" onClick=${() => { setYm([t.getFullYear(), t.getMonth()]); setSel(null); }}>Today</button>
+        <button class="icon-btn" aria-label="Next month" onClick=${() => shift(1)}><${Icon} n="chevron-right" s=${20} /></button>
+      </div>
+    </div>
+    <div class="cal-legend">
+      <span class="lg deadline"><i></i>Deadline</span><span class="lg start"><i></i>Starts</span>
+      ${own ? null : html`<span class="cal-note">Showing your top matches. Save or apply to add your own.</span>`}
+    </div>
+    <div class="cal-grid">
+      ${WEEKDAYS.map((w) => html`<div class="cal-wd">${w}</div>`)}
+      ${shown.map((d) => {
+        const k = dayKey(d);
+        const items = byDay[k] || [];
+        const out = d.getMonth() !== ym[1];
+        const isToday = +d === +t;
+        const isSel = sel != null && +d === sel;
+        return html`<div key=${k} class=${cx('cal-day', out && 'out', isToday && 'today', isSel && 'sel', items.length && 'has')}
+          role="button" tabindex="0" aria-label=${`${fmtDate(d, true)}${items.length ? `, ${items.map(label).join('; ')}` : ''}`}
+          onClick=${() => setSel(isSel ? null : +d)} onKeyDown=${(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSel(isSel ? null : +d); } }}>
+          <span class="cal-num">${d.getDate()}</span>
+          <span class="cal-evs">
+            ${items.slice(0, 2).map((e) => html`<span class=${cx('cal-ev', e.kind)} title=${label(e)}
+              onClick=${(x) => { x.stopPropagation(); onOpen(e.op); }}>${label(e)}</span>`)}
+            ${items.length > 2 ? html`<span class="cal-more">+${items.length - 2} more</span>` : null}
+          </span>
+          ${items.length ? html`<span class="cal-dots">${items.slice(0, 3).map((e) => html`<i class=${e.kind}></i>`)}</span>` : null}
+        </div>`;
+      })}
+    </div>
+
+    <div class="cal-agenda">
+      <div class="cal-agenda-h"><h3>${selDate ? fmtDate(selDate, true) : 'Coming up'}</h3>${selDate ? html`<button class="btn-link" onClick=${() => setSel(null)}>Show all</button>` : null}</div>
+      ${list.length ? html`<ul class="agenda">${list.map((e) => html`<li><button class="ag" onClick=${() => onOpen(e.op)}>
+        <span class="ag-date"><b>${e.d.getDate()}</b><span>${MONTHS[e.d.getMonth()]}</span></span>
+        <span class="ag-main"><span class=${cx('ag-kind', e.kind)}>${e.kind === 'deadline' ? `Deadline${e.est ? ' (estimate)' : ''}` : e.applied ? 'Starts · applied' : 'Starts'}</span><b>${e.op.title}</b><span>${e.op.org} · ${placeOf(e.op)}</span></span>
+        <${Icon} n="chevron-right" s=${18} />
+      </button></li>`)}</ul>` : html`<p class="sec-empty">${selDate ? 'Nothing on this day.' : 'Nothing coming up yet. Save or apply to see dates here.'}</p>`}
+    </div>
+  </section>`;
+}
+
 /* ---- landing.js ---- */
 /* ==========================================================================
    Waypoint · landing page: one headline, one action, one preview
@@ -4481,10 +4926,10 @@ const DEMO_PROFILE = { age: 20, stage: 'ug', types: ['internship', 'scholarship'
 const DEMO_DOCS = { transcript: 'ready', passport: 'ready', cv: 'progress', statement: 'progress' };
 const TAGLINE = { internship: 'Paid work experience', scholarship: 'Funding for your studies', shadowing: 'Spend a day with a professional', postgrad: "Master's and PhD programs" };
 
-// The demo account answers the five questions like any new account.
+// The demo account gives a name, then answers the five questions like any new account.
 function startDemo() {
   if (typeof vault !== 'undefined') vault.clear();
-  S.set({ user: { name: 'Yousif', email: 'yousif@example.com' }, profile: null, docs: {}, files: {}, details: {}, saved: [], applied: [], pro: null });
+  S.set({ user: { name: '', email: 'demo@example.com' }, profile: null, docs: {}, files: {}, details: {}, saved: [], dismissed: [], applied: [], pro: null });
   go('check-in');
 }
 
@@ -4532,8 +4977,32 @@ function Auth({ mode }) {
   </div>`;
 }
 
+/* ---------- The demo starts with a name ---------- */
+function NameStep() {
+  const [name, setName] = useState('');
+  const ref = useRef();
+  useEffect(() => { if (ref.current) ref.current.focus(); }, []);
+  const clean = name.trim().replace(/\s+/g, ' ');
+  const submit = (e) => { e.preventDefault(); if (clean) A.setUser({ name: clean }); };
+  return html`<form class="ci" onSubmit=${submit} novalidate>
+    <header class="top"><${Logo} /><span class="sp"></span></header>
+    <main class="ci-main wrap">
+      <h1 class="ci-h">First, what’s your name?</h1>
+      <p class="ci-note ci-intro">Then five quick questions.</p>
+      <input ref=${ref} id="ci-name" class="input ci-name" autocomplete="given-name" autocapitalize="words" maxlength="40" placeholder="Your name" aria-label="Your name" value=${name} onInput=${(e) => setName(e.target.value)} />
+    </main>
+    <footer class="ci-foot">
+      <button type="button" class="btn btn-ghost" onClick=${() => { S.set({ user: null }); go(''); }}><${Icon} n="arrow-left" s=${18} />Back</button>
+      <button type="submit" class="btn btn-primary btn-lg" disabled=${!clean}>Continue</button>
+    </footer>
+  </form>`;
+}
+
 /* ---------- The five questions ---------- */
 function CheckIn() {
+  return S.state.user && !S.state.user.name ? html`<${NameStep} />` : html`<${Questions} />`;
+}
+function Questions() {
   const st = S.state;
   const prev = st.profile;
   const [step, setStep] = useState(0);
@@ -4661,7 +5130,7 @@ function NextStep({ p, st }) {
   </div>`;
 }
 
-function Home() {
+function Home({ view = 'matches' }) {
   const st = S.state;
   const p = st.profile;
   const [tab, setTab] = useState('all');
@@ -4700,6 +5169,8 @@ function Home() {
   const city = homeCity(p);
   const dests = p.dest.map((x) => (x === 'home' ? 'near home' : x === 'any' ? 'anywhere' : (REGIONS.find((r) => r.id === x) || {}).short)).join(', ');
   const op = openId ? opById(openId, p) : null;
+  const openOp = (o, photo) => { setOpenPhoto(photo || null); setOpenId(o.id); };
+  const savedRows = st.saved.slice().reverse().map((id) => rows.find((r) => r.op.id === id)).filter(Boolean);
   const grid = (arr) => {
     const photos = PHOTOS.spread(arr.map((r) => r.op));
     return html`<div class="grid">${arr.map((r, i) => html`<${OppCard} key=${r.op.id} row=${r} st=${st} photo=${photos[i]} onOpen=${() => { setOpenPhoto(photos[i]); setOpenId(r.op.id); }} />`)}</div>`;
@@ -4707,12 +5178,29 @@ function Home() {
   return html`<div class="home">
     <header class="top">
       <${Logo} to="home" />
-      <${TopNav} active="home" />
+      <${TopNav} active=${view === 'matches' ? 'home' : view} />
       <span class="sp"></span>
       <button class=${cx('pro-pill', pro && 'on')} onClick=${() => setProSheet({})}><${Icon} n="sparkles" s=${14} /><span class="pro-pill-tx">${pro ? 'Pro' : 'Get Pro'}</span></button>
       <${UserMenu} name=${name} pro=${pro} onPro=${() => setProSheet({})} />
     </header>
     <main class="wrap home-in" id="main">
+      ${view === 'saved' ? html`
+        <div class="home-head">
+          <h1 class="home-h">Saved</h1>
+          <p class="home-sub">${savedRows.length ? `${savedRows.length} saved. Open any to see what it needs, or apply in one tap.` : 'Swipe right in Quick picks, or tap Save on any listing.'}</p>
+        </div>
+        ${savedRows.length ? grid(savedRows) : html`<div class="empty-card"><span class="empty-ic"><${Icon} n="bookmark" s=${26} /></span><b>Nothing saved yet</b><button class="btn btn-primary" onClick=${() => go('picks')}><${Icon} n="layers" s=${16} />Go to Quick picks</button></div>`}` : null}
+
+      ${view === 'calendar' ? html`
+        <div class="home-head">
+          <h1 class="home-h">Calendar</h1>
+          <p class="home-sub">Deadlines and start dates for what you saved and applied to.</p>
+        </div>
+        <${CalendarView} p=${p} st=${st} onOpen=${(o) => openOp(o)} />` : null}
+
+      ${view === 'picks' ? html`<${SwipeDeck} p=${p} st=${st} onOpen=${(o) => openOp(o)} />` : null}
+
+      ${view === 'matches' ? html`
       <div class="home-head">
         <h1 class="home-h">Hi ${firstName(name)}</h1>
         <p class="home-sub">${city.name} → ${dests} · <button class="btn-link" onClick=${() => go('check-in')}>Edit answers</button></p>
@@ -4749,7 +5237,7 @@ function Home() {
         </div>
         ${list.length ? grid(list.slice(0, limit)) : html`<p class="sec-empty">${tab === 'saved' ? 'Nothing saved yet. Open any card and tap Save.' : 'Nothing matches that search.'}</p>`}
         ${list.length > limit ? html`<button class="btn btn-secondary center-btn" onClick=${() => setLimit(limit + 12)}>Show more (${list.length - limit} left)</button>` : null}
-      </section>
+      </section>` : null}
     </main>
     <footer class="foot wrap home-foot"><p>Waypoint prototype · <button class="btn-link" onClick=${() => setCredits(true)}>Photo credits</button></p></footer>
     ${credits ? html`<${Credits} onClose=${() => setCredits(false)} />` : null}
@@ -4775,15 +5263,16 @@ function Root() {
   }, []);
   useEffect(() => { applyTheme(st.theme); }, [st.theme]);
   let r = route === 'welcome' ? 'check-in' : route;
-  if (!['', 'top', 'login', 'signup', 'check-in', 'home', 'documents'].includes(r)) r = 'home';
+  if (!['', 'top', 'login', 'signup', 'check-in', 'home', 'documents', 'saved', 'calendar', 'picks'].includes(r)) r = 'home';
   let view;
-  if ((r === 'home' || r === 'check-in' || r === 'documents') && !st.user) view = html`<${Redirect} to="signup" />`;
-  else if ((r === 'home' || r === 'documents') && !st.profile) view = html`<${Redirect} to="check-in" />`;
+  const inApp = ['home', 'documents', 'saved', 'calendar', 'picks'].includes(r);
+  if ((inApp || r === 'check-in') && !st.user) view = html`<${Redirect} to="signup" />`;
+  else if (inApp && !st.profile) view = html`<${Redirect} to="check-in" />`;
   else if (r === '' || r === 'top') view = html`<${Landing} />`;
   else if (r === 'login' || r === 'signup') view = html`<${Auth} mode=${r} />`;
   else if (r === 'check-in') view = html`<${CheckIn} />`;
   else if (r === 'documents') view = html`<${Documents} />`;
-  else view = html`<${Home} />`;
+  else view = html`<${Home} view=${['saved', 'calendar', 'picks'].includes(r) ? r : 'matches'} />`;
   return html`${view}<${Toasts} />`;
 }
 

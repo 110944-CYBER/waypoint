@@ -6,10 +6,10 @@ const DEMO_PROFILE = { age: 20, stage: 'ug', types: ['internship', 'scholarship'
 const DEMO_DOCS = { transcript: 'ready', passport: 'ready', cv: 'progress', statement: 'progress' };
 const TAGLINE = { internship: 'Paid work experience', scholarship: 'Funding for your studies', shadowing: 'Spend a day with a professional', postgrad: "Master's and PhD programs" };
 
-// The demo account answers the five questions like any new account.
+// The demo account gives a name, then answers the five questions like any new account.
 function startDemo() {
   if (typeof vault !== 'undefined') vault.clear();
-  S.set({ user: { name: 'Yousif', email: 'yousif@example.com' }, profile: null, docs: {}, files: {}, details: {}, saved: [], applied: [], pro: null });
+  S.set({ user: { name: '', email: 'demo@example.com' }, profile: null, docs: {}, files: {}, details: {}, saved: [], dismissed: [], applied: [], pro: null });
   go('check-in');
 }
 
@@ -57,8 +57,32 @@ function Auth({ mode }) {
   </div>`;
 }
 
+/* ---------- The demo starts with a name ---------- */
+function NameStep() {
+  const [name, setName] = useState('');
+  const ref = useRef();
+  useEffect(() => { if (ref.current) ref.current.focus(); }, []);
+  const clean = name.trim().replace(/\s+/g, ' ');
+  const submit = (e) => { e.preventDefault(); if (clean) A.setUser({ name: clean }); };
+  return html`<form class="ci" onSubmit=${submit} novalidate>
+    <header class="top"><${Logo} /><span class="sp"></span></header>
+    <main class="ci-main wrap">
+      <h1 class="ci-h">First, what’s your name?</h1>
+      <p class="ci-note ci-intro">Then five quick questions.</p>
+      <input ref=${ref} id="ci-name" class="input ci-name" autocomplete="given-name" autocapitalize="words" maxlength="40" placeholder="Your name" aria-label="Your name" value=${name} onInput=${(e) => setName(e.target.value)} />
+    </main>
+    <footer class="ci-foot">
+      <button type="button" class="btn btn-ghost" onClick=${() => { S.set({ user: null }); go(''); }}><${Icon} n="arrow-left" s=${18} />Back</button>
+      <button type="submit" class="btn btn-primary btn-lg" disabled=${!clean}>Continue</button>
+    </footer>
+  </form>`;
+}
+
 /* ---------- The five questions ---------- */
 function CheckIn() {
+  return S.state.user && !S.state.user.name ? html`<${NameStep} />` : html`<${Questions} />`;
+}
+function Questions() {
   const st = S.state;
   const prev = st.profile;
   const [step, setStep] = useState(0);

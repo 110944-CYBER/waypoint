@@ -33,7 +33,7 @@ function NextStep({ p, st }) {
   </div>`;
 }
 
-function Home() {
+function Home({ view = 'matches' }) {
   const st = S.state;
   const p = st.profile;
   const [tab, setTab] = useState('all');
@@ -72,6 +72,8 @@ function Home() {
   const city = homeCity(p);
   const dests = p.dest.map((x) => (x === 'home' ? 'near home' : x === 'any' ? 'anywhere' : (REGIONS.find((r) => r.id === x) || {}).short)).join(', ');
   const op = openId ? opById(openId, p) : null;
+  const openOp = (o, photo) => { setOpenPhoto(photo || null); setOpenId(o.id); };
+  const savedRows = st.saved.slice().reverse().map((id) => rows.find((r) => r.op.id === id)).filter(Boolean);
   const grid = (arr) => {
     const photos = PHOTOS.spread(arr.map((r) => r.op));
     return html`<div class="grid">${arr.map((r, i) => html`<${OppCard} key=${r.op.id} row=${r} st=${st} photo=${photos[i]} onOpen=${() => { setOpenPhoto(photos[i]); setOpenId(r.op.id); }} />`)}</div>`;
@@ -79,12 +81,29 @@ function Home() {
   return html`<div class="home">
     <header class="top">
       <${Logo} to="home" />
-      <${TopNav} active="home" />
+      <${TopNav} active=${view === 'matches' ? 'home' : view} />
       <span class="sp"></span>
       <button class=${cx('pro-pill', pro && 'on')} onClick=${() => setProSheet({})}><${Icon} n="sparkles" s=${14} /><span class="pro-pill-tx">${pro ? 'Pro' : 'Get Pro'}</span></button>
       <${UserMenu} name=${name} pro=${pro} onPro=${() => setProSheet({})} />
     </header>
     <main class="wrap home-in" id="main">
+      ${view === 'saved' ? html`
+        <div class="home-head">
+          <h1 class="home-h">Saved</h1>
+          <p class="home-sub">${savedRows.length ? `${savedRows.length} saved. Open any to see what it needs, or apply in one tap.` : 'Swipe right in Quick picks, or tap Save on any listing.'}</p>
+        </div>
+        ${savedRows.length ? grid(savedRows) : html`<div class="empty-card"><span class="empty-ic"><${Icon} n="bookmark" s=${26} /></span><b>Nothing saved yet</b><button class="btn btn-primary" onClick=${() => go('picks')}><${Icon} n="layers" s=${16} />Go to Quick picks</button></div>`}` : null}
+
+      ${view === 'calendar' ? html`
+        <div class="home-head">
+          <h1 class="home-h">Calendar</h1>
+          <p class="home-sub">Deadlines and start dates for what you saved and applied to.</p>
+        </div>
+        <${CalendarView} p=${p} st=${st} onOpen=${(o) => openOp(o)} />` : null}
+
+      ${view === 'picks' ? html`<${SwipeDeck} p=${p} st=${st} onOpen=${(o) => openOp(o)} />` : null}
+
+      ${view === 'matches' ? html`
       <div class="home-head">
         <h1 class="home-h">Hi ${firstName(name)}</h1>
         <p class="home-sub">${city.name} → ${dests} · <button class="btn-link" onClick=${() => go('check-in')}>Edit answers</button></p>
@@ -121,7 +140,7 @@ function Home() {
         </div>
         ${list.length ? grid(list.slice(0, limit)) : html`<p class="sec-empty">${tab === 'saved' ? 'Nothing saved yet. Open any card and tap Save.' : 'Nothing matches that search.'}</p>`}
         ${list.length > limit ? html`<button class="btn btn-secondary center-btn" onClick=${() => setLimit(limit + 12)}>Show more (${list.length - limit} left)</button>` : null}
-      </section>
+      </section>` : null}
     </main>
     <footer class="foot wrap home-foot"><p>Waypoint prototype · <button class="btn-link" onClick=${() => setCredits(true)}>Photo credits</button></p></footer>
     ${credits ? html`<${Credits} onClose=${() => setCredits(false)} />` : null}
@@ -147,15 +166,16 @@ function Root() {
   }, []);
   useEffect(() => { applyTheme(st.theme); }, [st.theme]);
   let r = route === 'welcome' ? 'check-in' : route;
-  if (!['', 'top', 'login', 'signup', 'check-in', 'home', 'documents'].includes(r)) r = 'home';
+  if (!['', 'top', 'login', 'signup', 'check-in', 'home', 'documents', 'saved', 'calendar', 'picks'].includes(r)) r = 'home';
   let view;
-  if ((r === 'home' || r === 'check-in' || r === 'documents') && !st.user) view = html`<${Redirect} to="signup" />`;
-  else if ((r === 'home' || r === 'documents') && !st.profile) view = html`<${Redirect} to="check-in" />`;
+  const inApp = ['home', 'documents', 'saved', 'calendar', 'picks'].includes(r);
+  if ((inApp || r === 'check-in') && !st.user) view = html`<${Redirect} to="signup" />`;
+  else if (inApp && !st.profile) view = html`<${Redirect} to="check-in" />`;
   else if (r === '' || r === 'top') view = html`<${Landing} />`;
   else if (r === 'login' || r === 'signup') view = html`<${Auth} mode=${r} />`;
   else if (r === 'check-in') view = html`<${CheckIn} />`;
   else if (r === 'documents') view = html`<${Documents} />`;
-  else view = html`<${Home} />`;
+  else view = html`<${Home} view=${['saved', 'calendar', 'picks'].includes(r) ? r : 'matches'} />`;
   return html`${view}<${Toasts} />`;
 }
 
