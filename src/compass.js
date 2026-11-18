@@ -92,7 +92,7 @@ function listingRefs(raw, p) {
   return { text, ops: ids.map((id) => opById(id, p)).filter(Boolean).slice(0, 4) };
 }
 
-function Compass({ p, st, open, setOpen, about, setAbout, onOpen }) {
+function Compass({ p, st, open, setOpen, about, setAbout, onOpen, locked, onLocked }) {
   const [msgs, setMsgs] = useState([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
@@ -127,8 +127,8 @@ function Compass({ p, st, open, setOpen, about, setAbout, onOpen }) {
     ? ['Am I eligible for this?', 'What should I do first for this?', 'Tailor my CV for this']
     : ['What should I do this week?', 'Which internships fit me best?', 'When do my applications start?'];
   const status = via === 'demo' ? 'Demo answers · connect Claude to go live' : via ? 'Powered by Claude' : 'Your Waypoint guide';
-  return html`${!open ? html`<button class="fab" onClick=${() => setOpen(true)} aria-label="Ask Compass, your Waypoint guide">
-      <span class="fab-ic"><${Icon} n="compass" s=${20} /></span><span class="fab-tx">Ask Compass</span>
+  return html`${!open ? html`<button class="fab" onClick=${() => (locked && onLocked ? onLocked() : setOpen(true))} aria-label="Ask Compass, your Waypoint guide">
+      <span class="fab-ic"><${Icon} n="compass" s=${20} /></span><span class="fab-tx">Ask Compass</span>${locked ? html`<span class="fab-pro">PRO</span>` : null}
     </button>` : null}
     ${open ? html`<aside class="compass" role="dialog" aria-label="Compass, your Waypoint guide">
       <header class="cp-head">

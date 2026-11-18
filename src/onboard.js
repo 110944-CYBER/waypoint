@@ -6,9 +6,10 @@ const DEMO_PROFILE = { age: 20, stage: 'ug', types: ['internship', 'scholarship'
 const DEMO_DOCS = { transcript: 'ready', passport: 'ready', cv: 'progress', statement: 'progress' };
 const TAGLINE = { internship: 'Paid work experience', scholarship: 'Funding for your studies', shadowing: 'Spend a day with a professional', postgrad: "Master's and PhD programs" };
 
-function startDemo(to) {
-  S.set({ user: { name: 'Layla Hassan', email: 'layla@example.com' }, profile: Object.assign({}, DEMO_PROFILE), docs: Object.assign({}, DEMO_DOCS), saved: [], applied: [] });
-  go(typeof to === 'string' ? to : 'home');
+// The demo account answers the five questions like any new account.
+function startDemo() {
+  S.set({ user: { name: 'Yousif', email: 'yousif@example.com' }, profile: null, docs: Object.assign({}, DEMO_DOCS), saved: [], applied: [], pro: null });
+  go('check-in');
 }
 
 /* ---------- Sign up / log in ---------- */

@@ -2,7 +2,7 @@
    Waypoint · home: your matches, one tap to open
    ========================================================================== */
 
-function UserMenu({ name }) {
+function UserMenu({ name, pro, onPro }) {
   const [open, setOpen, ref] = usePop();
   const [confirmReset, setConfirmReset] = useState(false);
   useEffect(() => { if (!open) setConfirmReset(false); }, [open]);
@@ -10,6 +10,7 @@ function UserMenu({ name }) {
     <button class="avatar" aria-label="Account menu" aria-expanded=${String(open)} onClick=${() => setOpen(!open)}>${initials(name || 'You')}</button>
     ${open && html`<div class="pop menu" role="menu">
       <div class="menu-me"><b>${name}</b><span>Prototype account</span></div>
+      <button role="menuitem" onClick=${() => { setOpen(false); onPro(); }}><${Icon} n="sparkles" s=${17} />${pro ? 'Manage Waypoint Pro' : 'Upgrade to Pro'}</button>
       <button role="menuitem" onClick=${() => { setOpen(false); go('check-in'); }}><${Icon} n="square-pen" s=${17} />Edit my answers</button>
       <button role="menuitem" onClick=${() => toggleTheme()}><${Icon} n=${isDark() ? 'sun' : 'moon'} s=${17} />${isDark() ? 'Light mode' : 'Dark mode'}</button>
       <button role="menuitem" onClick=${() => { setOpen(false); A.signOut(); }}><${Icon} n="log-out" s=${17} />Sign out</button>
@@ -41,6 +42,12 @@ function Home() {
   const [allRec, setAllRec] = useState(false);
   const [openId, setOpenId] = useState(null);
   const [openPhoto, setOpenPhoto] = useState(null);
+  const [proSheet, setProSheet] = useState(null); // null, or { after } to run once Pro starts
+  const pro = !!st.pro;
+  const askCompass = (about) => {
+    const openIt = () => { setCpAbout(about || null); setCpOpen(true); };
+    if (pro) openIt(); else setProSheet({ after: openIt });
+  };
   const [cpOpen, setCpOpen] = useState(false);
   const [cpAbout, setCpAbout] = useState(null);
   const [credits, setCredits] = useState(false);
@@ -72,7 +79,8 @@ function Home() {
     <header class="top">
       <${Logo} to="home" />
       <span class="sp"></span>
-      <${UserMenu} name=${name} />
+      <button class=${cx('pro-pill', pro && 'on')} onClick=${() => setProSheet({})}><${Icon} n="sparkles" s=${14} />${pro ? 'Pro' : 'Get Pro'}</button>
+      <${UserMenu} name=${name} pro=${pro} onPro=${() => setProSheet({})} />
     </header>
     <main class="wrap home-in" id="main">
       <div class="home-head">
@@ -114,8 +122,9 @@ function Home() {
     </main>
     <footer class="foot wrap home-foot"><p>Waypoint prototype · <button class="btn-link" onClick=${() => setCredits(true)}>Photo credits</button></p></footer>
     ${credits ? html`<${Credits} onClose=${() => setCredits(false)} />` : null}
-    ${op ? html`<${Drawer} label=${op.title} onClose=${() => setOpenId(null)}><${OppDetail} key=${op.id} op=${op} p=${p} st=${st} photo=${openPhoto} onAsk=${(o) => { setOpenId(null); setCpAbout(o); setCpOpen(true); }} /></${Drawer}>` : null}
-    <${Compass} p=${p} st=${st} open=${cpOpen} setOpen=${setCpOpen} about=${cpAbout} setAbout=${setCpAbout} onOpen=${(o) => { setCpOpen(false); setOpenPhoto(null); setOpenId(o.id); }} />
+    ${op ? html`<${Drawer} label=${op.title} onClose=${() => setOpenId(null)}><${OppDetail} key=${op.id} op=${op} p=${p} st=${st} photo=${openPhoto} onAsk=${(o) => { setOpenId(null); askCompass(o); }} /></${Drawer}>` : null}
+    <${Compass} p=${p} st=${st} locked=${!pro} onLocked=${() => askCompass(null)} open=${cpOpen} setOpen=${setCpOpen} about=${cpAbout} setAbout=${setCpAbout} onOpen=${(o) => { setCpOpen(false); setOpenPhoto(null); setOpenId(o.id); }} />
+    ${proSheet ? html`<${ProSheet} onClose=${() => setProSheet(null)} onStarted=${() => { const after = proSheet.after; setProSheet(null); if (after) after(); }} />` : null}
   </div>`;
 }
 

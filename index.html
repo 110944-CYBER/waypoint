@@ -440,6 +440,53 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .logo { font-size: 18px; gap: 7px; }
 }
 
+
+/* ---------- Waypoint Pro ---------- */
+.pro-pill { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; margin-right: 8px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); color: var(--accent); font: 700 13.5px/1 var(--f-display); white-space: nowrap; transition: background-color .15s; }
+.pro-pill:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.pro-pill.on { background: var(--accent); border-color: transparent; color: #fff; }
+.fab-pro { padding: 4px 7px; margin-left: -2px; border-radius: 6px; background: var(--accent); color: #fff; font: 800 11px/1 var(--f-display); letter-spacing: .05em; }
+.pro-wrap { position: fixed; inset: 0; z-index: 150; display: grid; place-items: center; padding: 20px; }
+.pro-back { position: absolute; inset: 0; background: rgba(5, 7, 12, .62); }
+.pro-sheet { position: relative; display: grid; gap: 16px; width: min(460px, 100%); max-height: calc(100dvh - 40px); overflow-y: auto; padding: 28px; border-radius: 22px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-lg); outline: none; animation: cpIn .25s var(--ease); }
+.pro-x { position: absolute; top: 12px; right: 12px; }
+.pro-badge { justify-self: start; display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 99px; background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); font: 700 13px/1 var(--f-display); }
+.pro-h { font: 800 28px/1.12 var(--f-display); letter-spacing: -.02em; padding-right: 36px; }
+.pro-sub { color: var(--ink-2); font-size: 15px; }
+.pro-feats { display: grid; gap: 12px; }
+.pro-feats li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; }
+.pro-ic { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--surface-2); color: var(--accent); }
+.pro-feats li > span:last-child { display: grid; line-height: 1.3; }
+.pro-feats b { font-size: 15px; }
+.pro-feats li > span:last-child > span { font-size: 13.5px; color: var(--ink-2); }
+.pro-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pro-plan { display: grid; gap: 6px; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--line); text-align: left; transition: border-color .15s, background-color .15s; }
+.pro-plan.on { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.pro-plan-l { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--ink-2); }
+.pro-plan-l em { font-style: normal; font-size: 11.5px; font-weight: 800; color: var(--ok); }
+.pro-plan-p { font-size: 13px; color: var(--ink-2); }
+.pro-plan-p b { font: 800 22px/1 var(--f-display); color: var(--ink); }
+.pro-fine { display: flex; gap: 6px; align-items: flex-start; font-size: 12.5px; color: var(--ink-3); }
+.pro-fine svg { flex: none; margin-top: 2px; }
+.plans { display: grid; gap: 22px; padding-top: 8px; padding-bottom: 72px; }
+.plans-h { font: 800 clamp(1.7rem, 3.4vw, 2.4rem)/1.1 var(--f-display); letter-spacing: -.03em; text-align: center; }
+.plans-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 820px; width: 100%; margin: 0 auto; }
+.plan-card { display: grid; gap: 14px; align-content: start; padding: 26px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); }
+.plan-card.on { border: 1.5px solid var(--accent); box-shadow: var(--shadow-md); }
+.plan-name { display: inline-flex; align-items: center; gap: 8px; font: 800 18px/1 var(--f-display); }
+.plan-card.on .plan-name { color: var(--accent); }
+.plan-price { color: var(--ink-2); font-size: 14.5px; }
+.plan-price b { font: 800 34px/1 var(--f-display); color: var(--ink); margin-right: 4px; }
+.plan-list { display: grid; gap: 10px; margin-bottom: 6px; }
+.plan-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; font-size: 15px; }
+.plan-list svg { color: var(--ok); margin-top: 3px; }
+@media (max-width: 640px) {
+  .pro-wrap { place-items: end center; padding: 0; }
+  .pro-sheet { width: 100%; border-radius: 22px 22px 0 0; padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+  .plans-grid { grid-template-columns: minmax(0, 1fr); }
+  .pro-pill { padding: 0 10px; margin-right: 4px; }
+}
+
 /* ---------- Toasts ---------- */
 .toasts { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 200; transform: translateX(-50%); display: grid; gap: 8px; justify-items: center; width: max-content; max-width: calc(100vw - 32px); pointer-events: none; }
 .toast { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: var(--ink); color: var(--bg); font-weight: 650; font-size: 14.5px; box-shadow: var(--shadow-lg); animation: toastIn .25s var(--ease); }
@@ -2006,7 +2053,7 @@ const canHover = () => !!(window.matchMedia && window.matchMedia('(hover: hover)
 
 /* ---------- Store (per viewer, kept in this browser only) ---------- */
 const STORE_KEY = 'waypoint.prototype.v2';
-const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, theme: null });
+const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, theme: null, pro: null });
 function loadState() {
   try {
     const raw = localStorage.getItem(STORE_KEY);
@@ -2083,6 +2130,8 @@ const A = {
     S.set({ applied: appliedList(S.state).filter((a) => a.id !== id) });
     toast('Removed from My applications', 'rotate-ccw');
   },
+  startPro(plan) { S.set({ pro: { plan, since: new Date().toISOString() } }); toast('Welcome to Waypoint Pro', 'sparkles'); },
+  cancelPro() { S.set({ pro: null }); toast('You’re back on the free plan', 'rotate-ccw'); },
   signOut() { S.set({ user: null }); go(''); },
   reset() {
     try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ignore */ }
@@ -3892,7 +3941,7 @@ function listingRefs(raw, p) {
   return { text, ops: ids.map((id) => opById(id, p)).filter(Boolean).slice(0, 4) };
 }
 
-function Compass({ p, st, open, setOpen, about, setAbout, onOpen }) {
+function Compass({ p, st, open, setOpen, about, setAbout, onOpen, locked, onLocked }) {
   const [msgs, setMsgs] = useState([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
@@ -3927,8 +3976,8 @@ function Compass({ p, st, open, setOpen, about, setAbout, onOpen }) {
     ? ['Am I eligible for this?', 'What should I do first for this?', 'Tailor my CV for this']
     : ['What should I do this week?', 'Which internships fit me best?', 'When do my applications start?'];
   const status = via === 'demo' ? 'Demo answers · connect Claude to go live' : via ? 'Powered by Claude' : 'Your Waypoint guide';
-  return html`${!open ? html`<button class="fab" onClick=${() => setOpen(true)} aria-label="Ask Compass, your Waypoint guide">
-      <span class="fab-ic"><${Icon} n="compass" s=${20} /></span><span class="fab-tx">Ask Compass</span>
+  return html`${!open ? html`<button class="fab" onClick=${() => (locked && onLocked ? onLocked() : setOpen(true))} aria-label="Ask Compass, your Waypoint guide">
+      <span class="fab-ic"><${Icon} n="compass" s=${20} /></span><span class="fab-tx">Ask Compass</span>${locked ? html`<span class="fab-pro">PRO</span>` : null}
     </button>` : null}
     ${open ? html`<aside class="compass" role="dialog" aria-label="Compass, your Waypoint guide">
       <header class="cp-head">
@@ -3957,6 +4006,92 @@ function Compass({ p, st, open, setOpen, about, setAbout, onOpen }) {
         <button class="cp-send" type="submit" aria-label="Send" disabled=${!input.trim() || busy}><${Icon} n="arrow-up" s=${18} w=${2.4} /></button>
       </form>
     </aside>` : null}`;
+}
+
+/* ---- pro.js ---- */
+/* ==========================================================================
+   Waypoint · Pro: the paid plan. Free keeps every match, checklist and
+   deadline; Pro adds Compass, the AI guide that plans with you.
+   Prototype: starting Pro takes no payment.
+   ========================================================================== */
+
+const PRO_PLANS = {
+  monthly: { label: 'Monthly', price: '$4.99', per: 'a month', note: '' },
+  yearly: { label: 'Yearly', price: '$39', per: 'a year', note: 'Save 35%' },
+};
+const PRO_FEATURES = [
+  ['compass', 'Compass, your AI guide', 'Answers any question about studies, admissions and careers.'],
+  ['route', 'Your personal plan', 'Any goal turned into clear steps, with timing.'],
+  ['file-user', 'CV tailoring', 'Shape your CV for each opportunity.'],
+  ['circle-check', 'Eligibility checks', 'Know if you qualify before you apply.'],
+  ['calendar-clock', 'A weekly plan', 'What to do this week, every week.'],
+];
+
+function ProSheet({ onClose, onStarted }) {
+  const cur = S.state.pro;
+  const [plan, setPlan] = useState((cur && cur.plan) || 'yearly');
+  const ref = useRef();
+  useEffect(() => {
+    const k = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', k);
+    document.body.classList.add('no-scroll');
+    if (ref.current) ref.current.focus();
+    return () => { window.removeEventListener('keydown', k); document.body.classList.remove('no-scroll'); };
+  }, []);
+  return html`<div class="pro-wrap">
+    <div class="pro-back" onClick=${onClose}></div>
+    <div class="pro-sheet" role="dialog" aria-modal="true" aria-label="Waypoint Pro" tabindex="-1" ref=${ref}>
+      <button class="icon-btn pro-x" aria-label="Close" onClick=${onClose}><${Icon} n="x" s=${20} /></button>
+      <span class="pro-badge"><${Icon} n="sparkles" s=${14} />Waypoint Pro</span>
+      <h2 class="pro-h">${cur ? 'You’re on Waypoint Pro' : 'Your personal plan, built by AI'}</h2>
+      <p class="pro-sub">${cur
+        ? `${PRO_PLANS[cur.plan].label} plan, ${PRO_PLANS[cur.plan].price} ${PRO_PLANS[cur.plan].per}. Started ${fmtDate(new Date(cur.since), true)}.`
+        : 'Everything in Free, plus Compass: an AI guide that plans every step with you.'}</p>
+      <ul class="pro-feats">${PRO_FEATURES.map(([ic, t, d]) => html`<li>
+        <span class="pro-ic"><${Icon} n=${ic} s=${18} /></span><span><b>${t}</b><span>${d}</span></span>
+      </li>`)}</ul>
+      ${cur ? html`
+        <button class="btn btn-primary btn-lg btn-block" onClick=${onClose}>Keep using Pro</button>
+        <button class="btn btn-ghost btn-block" onClick=${() => { A.cancelPro(); onClose(); }}>Cancel Pro</button>` : html`
+        <div class="pro-plans" role="radiogroup" aria-label="Choose a plan">${Object.entries(PRO_PLANS).map(([id, pl]) => html`<button type="button" role="radio" aria-checked=${String(plan === id)} class=${cx('pro-plan', plan === id && 'on')} onClick=${() => setPlan(id)}>
+          <span class="pro-plan-l">${pl.label}${pl.note ? html`<em>${pl.note}</em>` : null}</span>
+          <span class="pro-plan-p"><b>${pl.price}</b> ${pl.per}</span>
+        </button>`)}</div>
+        <button class="btn btn-primary btn-lg btn-block" onClick=${() => { A.startPro(plan); if (onStarted) onStarted(); else onClose(); }}>Start Waypoint Pro</button>
+        <p class="pro-fine"><${Icon} n="lock" s=${13} />Prototype: no payment is taken. Free stays free: every match, checklist and deadline.</p>`}
+    </div>
+  </div>`;
+}
+
+/* The plans, side by side, for the landing page. */
+function Plans({ onStart }) {
+  return html`<section class="plans wrap" aria-labelledby="plans-h">
+    <h2 id="plans-h" class="plans-h">Free to start. Pro to go further.</h2>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <span class="plan-name">Free</span>
+        <span class="plan-price"><b>$0</b> forever</span>
+        <ul class="plan-list">
+          <li><${Icon} n="check" s=${16} />Matches ranked by how well they fit you</li>
+          <li><${Icon} n="check" s=${16} />Every opportunity, near and far</li>
+          <li><${Icon} n="check" s=${16} />What each one needs, step by step</li>
+          <li><${Icon} n="check" s=${16} />Deadlines and an applications tracker</li>
+        </ul>
+        <button class="btn btn-secondary btn-block" onClick=${onStart}>Get started</button>
+      </div>
+      <div class="plan-card on">
+        <span class="plan-name"><${Icon} n="sparkles" s=${16} />Waypoint Pro</span>
+        <span class="plan-price"><b>$4.99</b> a month, or $39 a year</span>
+        <ul class="plan-list">
+          <li><${Icon} n="check" s=${16} />Everything in Free</li>
+          <li><${Icon} n="check" s=${16} />Compass, your AI guide</li>
+          <li><${Icon} n="check" s=${16} />A personal step-by-step plan</li>
+          <li><${Icon} n="check" s=${16} />CV tailoring and eligibility checks</li>
+        </ul>
+        <button class="btn btn-primary btn-block" onClick=${onStart}>Start with Pro</button>
+      </div>
+    </div>
+  </section>`;
 }
 
 /* ---- landing.js ---- */
@@ -4012,6 +4147,8 @@ function Landing() {
           <li><span class="step-ic"><${Icon} n="circle-check" s=${22} /></span><b>Apply with a checklist</b><span>Know exactly what’s needed</span></li>
         </ol>
       </section>
+
+      <${Plans} onStart=${startJourney} />
     </main>
 
     <footer class="foot wrap">
@@ -4030,9 +4167,10 @@ const DEMO_PROFILE = { age: 20, stage: 'ug', types: ['internship', 'scholarship'
 const DEMO_DOCS = { transcript: 'ready', passport: 'ready', cv: 'progress', statement: 'progress' };
 const TAGLINE = { internship: 'Paid work experience', scholarship: 'Funding for your studies', shadowing: 'Spend a day with a professional', postgrad: "Master's and PhD programs" };
 
-function startDemo(to) {
-  S.set({ user: { name: 'Layla Hassan', email: 'layla@example.com' }, profile: Object.assign({}, DEMO_PROFILE), docs: Object.assign({}, DEMO_DOCS), saved: [], applied: [] });
-  go(typeof to === 'string' ? to : 'home');
+// The demo account answers the five questions like any new account.
+function startDemo() {
+  S.set({ user: { name: 'Yousif', email: 'yousif@example.com' }, profile: null, docs: Object.assign({}, DEMO_DOCS), saved: [], applied: [], pro: null });
+  go('check-in');
 }
 
 /* ---------- Sign up / log in ---------- */
@@ -4177,7 +4315,7 @@ function CheckIn() {
    Waypoint · home: your matches, one tap to open
    ========================================================================== */
 
-function UserMenu({ name }) {
+function UserMenu({ name, pro, onPro }) {
   const [open, setOpen, ref] = usePop();
   const [confirmReset, setConfirmReset] = useState(false);
   useEffect(() => { if (!open) setConfirmReset(false); }, [open]);
@@ -4185,6 +4323,7 @@ function UserMenu({ name }) {
     <button class="avatar" aria-label="Account menu" aria-expanded=${String(open)} onClick=${() => setOpen(!open)}>${initials(name || 'You')}</button>
     ${open && html`<div class="pop menu" role="menu">
       <div class="menu-me"><b>${name}</b><span>Prototype account</span></div>
+      <button role="menuitem" onClick=${() => { setOpen(false); onPro(); }}><${Icon} n="sparkles" s=${17} />${pro ? 'Manage Waypoint Pro' : 'Upgrade to Pro'}</button>
       <button role="menuitem" onClick=${() => { setOpen(false); go('check-in'); }}><${Icon} n="square-pen" s=${17} />Edit my answers</button>
       <button role="menuitem" onClick=${() => toggleTheme()}><${Icon} n=${isDark() ? 'sun' : 'moon'} s=${17} />${isDark() ? 'Light mode' : 'Dark mode'}</button>
       <button role="menuitem" onClick=${() => { setOpen(false); A.signOut(); }}><${Icon} n="log-out" s=${17} />Sign out</button>
@@ -4216,6 +4355,12 @@ function Home() {
   const [allRec, setAllRec] = useState(false);
   const [openId, setOpenId] = useState(null);
   const [openPhoto, setOpenPhoto] = useState(null);
+  const [proSheet, setProSheet] = useState(null); // null, or { after } to run once Pro starts
+  const pro = !!st.pro;
+  const askCompass = (about) => {
+    const openIt = () => { setCpAbout(about || null); setCpOpen(true); };
+    if (pro) openIt(); else setProSheet({ after: openIt });
+  };
   const [cpOpen, setCpOpen] = useState(false);
   const [cpAbout, setCpAbout] = useState(null);
   const [credits, setCredits] = useState(false);
@@ -4247,7 +4392,8 @@ function Home() {
     <header class="top">
       <${Logo} to="home" />
       <span class="sp"></span>
-      <${UserMenu} name=${name} />
+      <button class=${cx('pro-pill', pro && 'on')} onClick=${() => setProSheet({})}><${Icon} n="sparkles" s=${14} />${pro ? 'Pro' : 'Get Pro'}</button>
+      <${UserMenu} name=${name} pro=${pro} onPro=${() => setProSheet({})} />
     </header>
     <main class="wrap home-in" id="main">
       <div class="home-head">
@@ -4289,8 +4435,9 @@ function Home() {
     </main>
     <footer class="foot wrap home-foot"><p>Waypoint prototype · <button class="btn-link" onClick=${() => setCredits(true)}>Photo credits</button></p></footer>
     ${credits ? html`<${Credits} onClose=${() => setCredits(false)} />` : null}
-    ${op ? html`<${Drawer} label=${op.title} onClose=${() => setOpenId(null)}><${OppDetail} key=${op.id} op=${op} p=${p} st=${st} photo=${openPhoto} onAsk=${(o) => { setOpenId(null); setCpAbout(o); setCpOpen(true); }} /></${Drawer}>` : null}
-    <${Compass} p=${p} st=${st} open=${cpOpen} setOpen=${setCpOpen} about=${cpAbout} setAbout=${setCpAbout} onOpen=${(o) => { setCpOpen(false); setOpenPhoto(null); setOpenId(o.id); }} />
+    ${op ? html`<${Drawer} label=${op.title} onClose=${() => setOpenId(null)}><${OppDetail} key=${op.id} op=${op} p=${p} st=${st} photo=${openPhoto} onAsk=${(o) => { setOpenId(null); askCompass(o); }} /></${Drawer}>` : null}
+    <${Compass} p=${p} st=${st} locked=${!pro} onLocked=${() => askCompass(null)} open=${cpOpen} setOpen=${setCpOpen} about=${cpAbout} setAbout=${setCpAbout} onOpen=${(o) => { setCpOpen(false); setOpenPhoto(null); setOpenId(o.id); }} />
+    ${proSheet ? html`<${ProSheet} onClose=${() => setProSheet(null)} onStarted=${() => { const after = proSheet.after; setProSheet(null); if (after) after(); }} />` : null}
   </div>`;
 }
 

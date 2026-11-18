@@ -50,6 +50,8 @@ function Landing() {
           <li><span class="step-ic"><${Icon} n="circle-check" s=${22} /></span><b>Apply with a checklist</b><span>Know exactly what’s needed</span></li>
         </ol>
       </section>
+
+      <${Plans} onStart=${startJourney} />
     </main>
 
     <footer class="foot wrap">

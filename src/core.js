@@ -9,7 +9,7 @@ const canHover = () => !!(window.matchMedia && window.matchMedia('(hover: hover)
 
 /* ---------- Store (per viewer, kept in this browser only) ---------- */
 const STORE_KEY = 'waypoint.prototype.v2';
-const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, theme: null });
+const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, theme: null, pro: null });
 function loadState() {
   try {
     const raw = localStorage.getItem(STORE_KEY);
@@ -86,6 +86,8 @@ const A = {
     S.set({ applied: appliedList(S.state).filter((a) => a.id !== id) });
     toast('Removed from My applications', 'rotate-ccw');
   },
+  startPro(plan) { S.set({ pro: { plan, since: new Date().toISOString() } }); toast('Welcome to Waypoint Pro', 'sparkles'); },
+  cancelPro() { S.set({ pro: null }); toast('You’re back on the free plan', 'rotate-ccw'); },
   signOut() { S.set({ user: null }); go(''); },
   reset() {
     try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ignore */ }
