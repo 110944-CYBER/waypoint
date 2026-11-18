@@ -1,0 +1,20 @@
+# One-click setup on Render: https://render.com/deploy?repo=https://github.com/110944-CYBER/waypoint
+# Render asks you for ANTHROPIC_API_KEY during setup; paste your Claude API key there.
+# The key stays in Render's settings and never goes into this repository or the web page.
+services:
+  - type: web
+    name: waypoint
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: NODE_VERSION
+        value: "22"
+      - key: TRUST_PROXY
+        value: "1"
+      - key: COMPASS_DAILY_LIMIT
+        value: "500"

@@ -12,18 +12,19 @@ A prototype that matches students and graduates to internships, scholarships, jo
 
 Your credentials stay on the server (`server.mjs`); the web page never sees them. Without credentials, Compass uses its built-in answers.
 
-## Put it online from GitHub
+## Put it online with Render
 
-GitHub Pages only hosts static files. It can show the site, but it cannot run `server.mjs` or keep a secret, so on GitHub Pages alone Compass uses its built-in answers.
+The live site runs on Render, which serves the page and keeps your Claude API key secret on the server.
 
-For Compass to answer with Claude online:
+1. Open https://render.com/deploy?repo=https://github.com/110944-CYBER/waypoint and sign up or log in (signing in with GitHub is easiest).
+2. Render reads `render.yaml` and shows one web service called `waypoint`. Paste your Claude API key into `ANTHROPIC_API_KEY` and click Apply.
+3. After a few minutes the site is live at an address like https://waypoint.onrender.com.
 
-1. Push this folder to a GitHub repository. `.env` and `node_modules/` are in `.gitignore`, so your key never leaves your computer.
-2. Create a web service from that repository on a host that runs Node, such as Render or Railway. Build command: `npm install`. Start command: `npm start`.
-3. Create an API key in the Claude Console (choose "Somewhere else" when it asks where your code runs) and add it in the host's environment settings as `ANTHROPIC_API_KEY`.
-4. Set a monthly spend limit in the Claude Console. Each visitor can ask 20 questions a minute, but the site is public.
-
-Compass uses Claude Haiku 5.5 only, with no thinking step and short answers, so each question costs a fraction of a cent.
+Notes:
+- The free plan sleeps after 15 minutes without visitors, so the first visit after a break takes 30 to 60 seconds. Open the site a minute before you present.
+- Compass uses Claude Haiku 5.5 only, with no thinking step and short answers, so each question costs a fraction of a cent. The whole site allows at most 500 Claude questions a day (`COMPASS_DAILY_LIMIT`) and 20 a minute per visitor; past that, Compass uses its built-in answers.
+- Set a monthly spend limit in the Claude Console as well.
+- Every push to GitHub redeploys the site.
 
 ## Edit the site
 
