@@ -54,6 +54,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .btn-sm { --bh: 36px; padding: 0 13px; font-size: 14px; border-radius: 10px; }
 .btn-lg { --bh: 52px; padding: 0 24px; font-size: 16px; border-radius: 14px; }
 .btn-block { width: 100%; }
+/* Full-width buttons and buttons in sheets can carry long names: let them wrap instead of cutting off. */
+.btn-block, .pro-sheet .btn { white-space: normal; height: auto; min-height: var(--bh); padding-top: 10px; padding-bottom: 10px; line-height: 1.25; text-align: center; }
+.btn-block > svg, .pro-sheet .btn > svg { flex: none; }
 .btn-link { font-weight: 650; color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; transition: text-decoration-color .15s; }
 .btn-link:hover { text-decoration-color: var(--ink); }
 .icon-btn { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; color: var(--ink-2); transition: background .15s, color .15s; }
@@ -487,7 +490,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .apply-list li.miss > svg { color: #F59E0B; }
 .apply-list li > span { display: grid; line-height: 1.3; min-width: 0; }
 .apply-list b { font-size: 14.5px; }
-.apply-list li > span > span { font-size: 13px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.apply-list li > span > span { font-size: 13px; color: var(--ink-2); overflow-wrap: anywhere; }
 .apply-list li.miss > span > span { color: var(--warn); font-weight: 650; }
 .apply-done { justify-self: start; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); }
 .need-up { margin-top: 10px; }
