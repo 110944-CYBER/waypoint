@@ -22,7 +22,7 @@ The live site runs on Render, which serves the page and keeps your Claude API ke
 
 Notes:
 - The free plan sleeps after 15 minutes without visitors, so the first visit after a break takes 30 to 60 seconds. Open the site a minute before you present.
-- Compass uses Claude Haiku 5.5 only, with no thinking step and short answers, so each question costs a fraction of a cent. The whole site allows at most 500 Claude questions a day (`COMPASS_DAILY_LIMIT`) and 20 a minute per visitor; past that, Compass uses its built-in answers.
+- Compass uses Claude Haiku 5.5 only, with no thinking step and short answers, so each question costs a fraction of a cent. There is no question limit. To add one later, set `COMPASS_DAILY_LIMIT` (whole site per day) or `COMPASS_PER_MINUTE` (per visitor) in Render's environment settings.
 - Set a monthly spend limit in the Claude Console as well.
 - Every push to GitHub redeploys the site.
 

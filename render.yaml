@@ -16,5 +16,3 @@ services:
         value: "22"
       - key: TRUST_PROXY
         value: "1"
-      - key: COMPASS_DAILY_LIMIT
-        value: "500"

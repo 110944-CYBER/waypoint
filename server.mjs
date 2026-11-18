@@ -20,7 +20,8 @@ import Anthropic from '@anthropic-ai/sdk';
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT) || 3000;
 const MODEL = 'claude-haiku-5-5'; // Haiku only: fast and low cost
-const LIMITS = { turns: 12, chars: 4000, context: 12000, body: 96 * 1024, perMinute: 20, perDay: Number(process.env.COMPASS_DAILY_LIMIT) || 500 };
+// No question limits by default. To add some later, set COMPASS_PER_MINUTE (per visitor) or COMPASS_DAILY_LIMIT (whole site).
+const LIMITS = { turns: 12, chars: 4000, context: 12000, body: 96 * 1024, perMinute: Number(process.env.COMPASS_PER_MINUTE) || 0, perDay: Number(process.env.COMPASS_DAILY_LIMIT) || 0 };
 const TRUST_PROXY = process.env.TRUST_PROXY === '1'; // set on hosts like Render that sit behind a proxy
 
 const RULES = `You are Compass, the guide inside Waypoint, an app that helps students and graduates find internships, scholarships, job shadowing and postgraduate programs.
@@ -69,11 +70,12 @@ function clientIp(req) {
   return req.socket.remoteAddress || 'unknown';
 }
 
-/* A daily cap on Claude questions for the whole site, to protect your credits.
+/* Optional daily cap on Claude questions for the whole site (off unless COMPASS_DAILY_LIMIT is set).
    After it, Compass uses its built-in answers until the next day (UTC). */
 let capDay = '';
 let usedToday = 0;
 function underDailyCap() {
+  if (!LIMITS.perDay) return true;
   const today = new Date().toISOString().slice(0, 10);
   if (today !== capDay) { capDay = today; usedToday = 0; }
   if (usedToday >= LIMITS.perDay) {
@@ -84,9 +86,10 @@ function underDailyCap() {
   return true;
 }
 
-/* Simple per-visitor limit so one browser cannot run up your bill. */
+/* Optional per-visitor limit (off unless COMPASS_PER_MINUTE is set). */
 const hits = new Map();
 function allow(ip) {
+  if (!LIMITS.perMinute) return true;
   const now = Date.now();
   const recent = (hits.get(ip) || []).filter((t) => now - t < 60_000);
   if (recent.length >= LIMITS.perMinute) { hits.set(ip, recent); return false; }
