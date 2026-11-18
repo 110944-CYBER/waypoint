@@ -1,0 +1,9 @@
+--bg: #0B0D12; --surface: #14171E; --surface-2: #1B1F28; --ink: #F3F4F6; --ink-2: #A3AAB7; --ink-3: #6B7280; --line: #262B35;
+    --accent: #FF5A4D; --accent-2: #60A5FA; --ok: #34D399; --ok-soft: #0F2A1F; --urgent: #F87171; --urgent-soft: #2B1717;
+    --t-internship: #60A5FA; --t-scholarship: #FBBF24; --t-shadowing: #34D399; --t-postgrad: #A78BFA;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, .5);
+    --shadow-md: 0 12px 32px -12px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .35);
+    --shadow-lg: 0 30px 70px -24px rgba(0, 0, 0, .8);
+    --scrim: rgba(0, 0, 0, .6);
+    --focus: #60A5FA;
+    color-scheme: dark;

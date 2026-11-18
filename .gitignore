@@ -1,0 +1,5 @@
+node_modules/
+.env
+.bundle-check.js
+site.html
+.DS_Store

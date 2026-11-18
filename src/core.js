@@ -1,0 +1,95 @@
+/* ==========================================================================
+   Waypoint · core: Preact bindings, store, router, theme, toasts
+   ========================================================================== */
+const { html, render, useState, useEffect, useRef, useMemo } = htmPreact;
+
+const cx = (...a) => a.filter(Boolean).join(' ');
+const reducedMotion = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const canHover = () => !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+
+/* ---------- Store (per viewer, kept in this browser only) ---------- */
+const STORE_KEY = 'waypoint.prototype.v2';
+const blankState = () => ({ v: 2, user: null, profile: null, saved: [], applied: [], docs: {}, theme: null });
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) { const s = JSON.parse(raw); if (s && s.v === 2) return Object.assign(blankState(), s); }
+  } catch (e) { /* storage unavailable: start fresh */ }
+  return blankState();
+}
+const S = {
+  state: loadState(),
+  subs: new Set(),
+  set(patch) {
+    const next = typeof patch === 'function' ? patch(this.state) : patch;
+    this.state = Object.assign({}, this.state, next);
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(this.state)); } catch (e) { /* ignore */ }
+    this.subs.forEach((f) => f());
+  },
+};
+function useStore() {
+  const [, force] = useState(0);
+  useEffect(() => { const h = () => force((x) => x + 1); S.subs.add(h); return () => S.subs.delete(h); }, []);
+  return S.state;
+}
+
+/* ---------- Router (plain #names only) ---------- */
+const parseRoute = () => decodeURIComponent((location.hash || '').replace(/^#/, ''));
+function go(name) {
+  if (parseRoute() === name) { window.scrollTo({ top: 0, behavior: reducedMotion() ? 'auto' : 'smooth' }); return; }
+  location.hash = name;
+}
+function scrollToId(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* ---------- Theme ---------- */
+function applyTheme(t) {
+  const root = document.documentElement;
+  if (t === 'dark' || t === 'light') root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
+}
+function isDark() {
+  const t = document.documentElement.getAttribute('data-theme');
+  if (t) return t === 'dark';
+  return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+}
+function toggleTheme() { S.set({ theme: isDark() ? 'light' : 'dark' }); }
+
+/* ---------- Toasts ---------- */
+const TOASTS = { list: [], subs: new Set() };
+function toast(msg, icon = 'check') {
+  const id = Math.random().toString(36).slice(2);
+  TOASTS.list = TOASTS.list.concat({ id, msg, icon });
+  TOASTS.subs.forEach((f) => f());
+  setTimeout(() => { TOASTS.list = TOASTS.list.filter((t) => t.id !== id); TOASTS.subs.forEach((f) => f()); }, 2600);
+}
+
+/* ---------- Actions ---------- */
+const A = {
+  toggleSave(id) {
+    const on = S.state.saved.includes(id);
+    S.set({ saved: on ? S.state.saved.filter((x) => x !== id) : S.state.saved.concat(id) });
+    toast(on ? 'Removed from saved' : 'Saved', on ? 'bookmark' : 'bookmark-check');
+  },
+  setDoc(k, v) {
+    const docs = Object.assign({}, S.state.docs);
+    if (v) docs[k] = v; else delete docs[k];
+    S.set({ docs });
+  },
+  markApplied(op) {
+    if (appliedOn(S.state, op.id)) return;
+    S.set({ applied: appliedList(S.state).concat({ id: op.id, date: new Date().toISOString() }) });
+    toast(op.url ? 'Added to My applications. The official page opened in a new tab.' : 'Added to My applications', 'send');
+  },
+  unapply(id) {
+    S.set({ applied: appliedList(S.state).filter((a) => a.id !== id) });
+    toast('Removed from My applications', 'rotate-ccw');
+  },
+  signOut() { S.set({ user: null }); go(''); },
+  reset() {
+    try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ignore */ }
+    S.set(blankState());
+    go('');
+  },
+};

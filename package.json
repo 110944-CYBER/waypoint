@@ -1,0 +1,17 @@
+{
+  "name": "waypoint",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Waypoint: internships, scholarships, job shadowing and postgraduate programs matched to each student, with Compass, an AI guide powered by Claude.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "node --env-file-if-exists=.env server.mjs"
+  },
+  "engines": {
+    "node": ">=22.9"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.9.0"
+  }
+}
