@@ -85,7 +85,6 @@ const A = {
   markApplied(op) {
     if (appliedOn(S.state, op.id)) return;
     S.set({ applied: appliedList(S.state).concat({ id: op.id, date: new Date().toISOString() }) });
-    toast('Applied with your saved info', 'send');
   },
   addDoc(k, meta) {
     S.set({ files: Object.assign({}, S.state.files, { [k]: meta }), docs: Object.assign({}, S.state.docs, { [k]: 'ready' }) });
